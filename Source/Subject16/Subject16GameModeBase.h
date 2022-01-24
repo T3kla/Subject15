@@ -13,5 +13,5 @@ UCLASS()
 class SUBJECT16_API ASubject16GameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-	
+		
 };
