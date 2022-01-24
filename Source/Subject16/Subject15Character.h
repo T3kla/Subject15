@@ -17,19 +17,24 @@ public:
   ASubject15Character();
 
   UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-  USpringArmComponent *SpringArm;
+  USpringArmComponent *SpringArmCompCpp;
 
   UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-  UCameraComponent *Camera;
+  UCameraComponent *CameraCompCpp;
 
   UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-  UStaticMeshComponent *Pistol;
+  UStaticMeshComponent *PistolCompCpp;
 
   UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-  UArrowComponent *Arrow;
+  UArrowComponent *ArrowCompCpp;
 
 protected:
   virtual void BeginPlay() override;
+
+  virtual void MoveVertical(float Amount);
+  virtual void MoveHorizontal(float Amount);
+  virtual void Pitch(float Amount);
+  virtual void Yaw(float Amount);
 
 public:
   virtual void Tick(float DeltaTime) override;
