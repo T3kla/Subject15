@@ -22,6 +22,9 @@ ASubject15Character::ASubject15Character()
     ArrowCompCpp = CreateDefaultSubobject<UArrowComponent>(TEXT("ArrowCompCpp"));
     ArrowCompCpp->SetupAttachment(PistolCompCpp);
 
+    PistolFXPointCompCpp = CreateDefaultSubobject<USceneComponent>(TEXT("PistolFXPointCompCpp"));
+    PistolFXPointCompCpp->SetupAttachment(PistolCompCpp);
+
     //      Adding powers would be something like
 
     // PowerPushPullCompCpp =

@@ -35,6 +35,9 @@ class SUBJECT16_API ASubject15Character : public ACharacter
     UArrowComponent *ArrowCompCpp;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+    USceneComponent *PistolFXPointCompCpp; // Effects attatch to this
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     UMaterial *GunMaterialCpp;
 
     // UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
