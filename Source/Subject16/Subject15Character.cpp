@@ -4,9 +4,11 @@ ASubject15Character::ASubject15Character()
 {
     PrimaryActorTick.bCanEverTick = true;
 
+    // Set Capsule as root
     auto *Capsule = GetCapsuleComponent();
     SetRootComponent(Capsule);
 
+    // Main components and attachment order
     SpringArmCompCpp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmCompCpp"));
     SpringArmCompCpp->SetupAttachment(Capsule);
     SpringArmCompCpp->bUsePawnControlRotation = true;
@@ -19,6 +21,23 @@ ASubject15Character::ASubject15Character()
 
     ArrowCompCpp = CreateDefaultSubobject<UArrowComponent>(TEXT("ArrowCompCpp"));
     ArrowCompCpp->SetupAttachment(PistolCompCpp);
+
+    //      Adding powers would be something like
+
+    // PowerPushPullCompCpp =
+    // CreateDefaultSubobject<UPowerPushPullComponent>(TEXT("PowerPushPullCompCpp"));
+
+    // PowerActivationCompCpp =
+    // CreateDefaultSubobject<UPowerActivationComponent>(TEXT("PowerActivationCompCpp"));
+
+    // PowerExplosionCompCpp =
+    // CreateDefaultSubobject<UPowerExplosionComponent>(TEXT("PowerExplosionCompCpp"));
+
+    // PowerHookCompCpp =
+    // CreateDefaultSubobject<UPowerHookComponent>(TEXT("PowerHookCompCpp"));
+
+    // PowerPhaseCompCpp =
+    // CreateDefaultSubobject<UPowerPhaseComponent>(TEXT("PowerPhaseCompCpp"));
 }
 
 void ASubject15Character::BeginPlay()
@@ -34,6 +53,8 @@ void ASubject15Character::BeginPlay()
     InputComponent->BindAction("Jump", IE_Released, this, &ASubject15Character::JumpStop);
     InputComponent->BindAction("WeaponToSlot1", IE_Pressed, this, &ASubject15Character::SlotOne);
     InputComponent->BindAction("WeaponToSlot2", IE_Pressed, this, &ASubject15Character::SlotTwo);
+    InputComponent->BindAction("Shoot", IE_Pressed, this, &ASubject15Character::OnPowerPressed);
+    InputComponent->BindAction("Shoot", IE_Released, this, &ASubject15Character::OnPowerReleased);
 
     if (!GunMaterialCpp)
         return;
@@ -44,7 +65,7 @@ void ASubject15Character::BeginPlay()
     // Assign Dyn Material
     auto Materials = PistolCompCpp->GetMaterials();
     for (size_t i = 0; i < PistolCompCpp->GetMaterials().Num(); i++)
-        if (i > 0) // Skip first
+        if (i > 0) // Skip first because it's the gun's body
             PistolCompCpp->SetMaterial(i, GunDynMaterialCpp);
 }
 
@@ -83,12 +104,33 @@ void ASubject15Character::SlotOne()
 {
     if (GunDynMaterialCpp)
         GunDynMaterialCpp->SetVectorParameterValue("Color", {1.f, 0.f, 0.f, 0.f});
+
+    ChangePower(SlotOnePower);
 }
 
 void ASubject15Character::SlotTwo()
 {
     if (GunDynMaterialCpp)
         GunDynMaterialCpp->SetVectorParameterValue("Color", {0.f, 1.f, 0.f, 0.f});
+
+    ChangePower(SlotTwoPower);
+}
+
+void ASubject15Character::OnPowerPressed()
+{
+    // Call pressed on CurrentPower component
+}
+
+void ASubject15Character::OnPowerReleased()
+{
+    // Call released on CurrentPower component
+}
+
+void ASubject15Character::ChangePower(EPowers NewPower)
+{
+    // Call release on CurrentPower component
+    // Call pressed on NewPower component
+    // Set CurrentPower = NewPower
 }
 
 void ASubject15Character::Tick(float DeltaTime)
