@@ -105,6 +105,9 @@ void ASubject15Character::JumpStop()
 
 void ASubject15Character::SlotOne()
 {
+    if (GEngine)
+        GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Blue, "SlotOne");
+
     if (GunDynMaterialCpp)
         GunDynMaterialCpp->SetVectorParameterValue("Color", {1.f, 0.f, 0.f, 0.f});
 
@@ -113,6 +116,9 @@ void ASubject15Character::SlotOne()
 
 void ASubject15Character::SlotTwo()
 {
+    if (GEngine)
+        GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Blue, "SlotTwo");
+
     if (GunDynMaterialCpp)
         GunDynMaterialCpp->SetVectorParameterValue("Color", {0.f, 1.f, 0.f, 0.f});
 
