@@ -2,6 +2,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Materials/MaterialInstance.h"
+#include "Materials/MaterialInstanceDynamic.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/DataTable.h"
@@ -32,10 +34,10 @@ class SUBJECT16_API ALevelPortal : public AActor
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     UParticleSystemComponent *PortalParticleSystemCompCpp;
 
-    UPROPERTY(EditAnywhere, Category = "Level Portal")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Level Portal")
     bool AllowTravel = false;
 
-    UPROPERTY(EditInstanceOnly, Category = "Level Portal")
+    UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "Level Portal")
     FName TravelOverride = {"None"};
 
   protected:

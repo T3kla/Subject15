@@ -21,6 +21,7 @@ void ALevelPortal::BeginPlay()
 {
     Super::BeginPlay();
 
+    // Bind to Box Collision
     BoxCompCpp->OnComponentBeginOverlap.AddDynamic(this, &ALevelPortal::OnOverlap);
 }
 
