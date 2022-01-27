@@ -35,6 +35,9 @@ class SUBJECT16_API ALevelPortal : public AActor
     UPROPERTY(EditAnywhere, Category = "Level Portal")
     bool AllowTravel = false;
 
+    UPROPERTY(EditInstanceOnly, Category = "Level Portal")
+    FName TravelOverride = {"None"};
+
   protected:
     virtual void BeginPlay() override;
 

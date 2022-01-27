@@ -1,5 +1,5 @@
 #include "LevelPortal.h"
-#include "LevelPortalStructCpp.h"
+#include "LevelPortalStructureCpp.h"
 #include "Containers/UnrealString.h"
 
 ALevelPortal::ALevelPortal()
@@ -33,7 +33,6 @@ void ALevelPortal::OnOverlap(UPrimitiveComponent *OverlappedComp, AActor *Other,
                              UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep,
                              const FHitResult &SweepResult)
 {
-
     if (!AllowTravel)
     {
         if (GEngine)
@@ -59,27 +58,23 @@ void ALevelPortal::OnOverlap(UPrimitiveComponent *OverlappedComp, AActor *Other,
 
     for (auto &&name : RowNames)
     {
-        auto *pair = LevelPortalDataTableCpp->FindRow<FLevelPortalStructCpp>(name, CurrentLevel);
+        auto *pair = LevelPortalDataTableCpp->FindRow<FLevelPortalStructureCpp>(name, CurrentLevel);
 
-        if (!pair)
+        if (!pair || pair->OriginLevel == FName("None") || pair->DestinationLevel == FName("None"))
             continue;
 
-        if (CurrentLevel.Contains(pair->OriginLevel.ToString()))
+        auto orig = pair->OriginLevel.ToString();
+        auto dest = pair->DestinationLevel.ToString();
+
+        if (CurrentLevel.Contains(orig))
         {
             if (GEngine)
                 GEngine->AddOnScreenDebugMessage(
-                    -1, 2.5f, FColor::Red,
-                    FString::Printf(TEXT("Portal: Traveling to %s"),
-                                    pair->DestinationLevel.ToString()));
+                    -1, 2.5f, FColor::Red, FString::Printf(TEXT("Portal: Traveling to %s"), *dest));
 
             UGameplayStatics::OpenLevel(GetWorld(), pair->DestinationLevel);
 
             break;
         }
     }
-
-    // if (CurrentLevel == "ThirdPersonExampleMap")
-    //     UGameplayStatics::OpenLevel(GetWorld(), "Level2");
-    // else
-    //     UGameplayStatics::OpenLevel(GetWorld(), "ThirdPersonExampleMap");
 }
