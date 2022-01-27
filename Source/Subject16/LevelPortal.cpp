@@ -1,6 +1,7 @@
 #include "LevelPortal.h"
 #include "LevelPortalStructureCpp.h"
 #include "Containers/UnrealString.h"
+#include "GameFramework/Character.h"
 
 ALevelPortal::ALevelPortal()
 {
@@ -28,6 +29,12 @@ void ALevelPortal::BeginPlay()
 void ALevelPortal::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
+
+    // Fade in through distance
+    ACharacter *Character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+    auto charLoc = Character->GetActorLocation();
+    auto myLoc = GetActorLocation();
+    FadeOut(FVector::Distance(charLoc, myLoc));
 }
 
 void ALevelPortal::OnOverlap(UPrimitiveComponent *OverlappedComp, AActor *Other,

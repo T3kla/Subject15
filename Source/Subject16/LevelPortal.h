@@ -46,6 +46,9 @@ class SUBJECT16_API ALevelPortal : public AActor
   public:
     virtual void Tick(float DeltaTime) override;
 
+    UFUNCTION(BlueprintImplementableEvent)
+    void FadeOut(float disToPlayer);
+
   private:
     UFUNCTION()
     void OnOverlap(UPrimitiveComponent *OverlappedComp, AActor *Other,
