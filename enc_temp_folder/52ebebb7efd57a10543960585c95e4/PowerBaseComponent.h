@@ -52,7 +52,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		EFireMode FireMode = EFireMode::None;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float FireRate = 1.f; //Cantidad de balas por segundo
+		float FireRate = 0.3f;
 
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
 		TSubclassOf<AProjectileClass> ProjectilePowerType; //Projectil que se Spawnea dependiendo del poder

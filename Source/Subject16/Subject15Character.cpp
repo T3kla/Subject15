@@ -29,8 +29,8 @@ ASubject15Character::ASubject15Character()
 	//      Adding powers would be something like
 
 
-	PowerBaseComponent = CreateDefaultSubobject<UPowerBaseComponent>(TEXT("PowerBaseCompCpp"));
-	PowerBaseComponent2 = CreateDefaultSubobject<UPowerBaseComponent>(TEXT("PowerBase2CompCpp"));
+	PowerBaseComponent0 = CreateDefaultSubobject<UPowerBaseComponent>(TEXT("PowerBase0CompCpp"));
+	PowerBaseComponent1 = CreateDefaultSubobject<UPowerBaseComponent>(TEXT("PowerBase1CompCpp"));
 
 	M_PowerList.Init(nullptr, 2);
 	// PowerPushPullCompCpp =
@@ -80,11 +80,11 @@ void ASubject15Character::BeginPlay()
 
 
 	//Setup M_PowerList
-	M_PowerList[0] = PowerBaseComponent;
-	M_PowerList[1] = PowerBaseComponent2;
+	M_PowerList[0] = PowerBaseComponent0;
+	M_PowerList[1] = PowerBaseComponent1;
 
 	//Set up CurrentPower 
-	CurrentPowerBase = PowerBaseComponent; //Es redundante, se realiza abajo. Por claridad dejarlo (?)
+	//CurrentPowerBase = PowerBaseComponent0; //Es redundante, se realiza abajo. Por claridad dejarlo (?)
 	//"Init" de Poder al cambiarlo al primero
 	ChangePower(SlotOnePower, 0); //Aqui ya estamos seteando el CurrentPowerBase 
 

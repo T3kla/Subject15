@@ -42,11 +42,12 @@ class SUBJECT16_API ASubject15Character : public ACharacter
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     UMaterial *GunMaterialCpp;
 
+    //TESTING POWERS
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-    UPowerBaseComponent* PowerBaseComponent;
+    UPowerBaseComponent* PowerBaseComponent0;
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-        UPowerBaseComponent* PowerBaseComponent2;
-
+        UPowerBaseComponent* PowerBaseComponent1;
+    //END TESTING
 
     // UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     // UPowerPushPullComponent *PowerPushPullCompCpp;
@@ -100,4 +101,5 @@ class SUBJECT16_API ASubject15Character : public ACharacter
     UMaterialInstanceDynamic* GetGunDynMaterialCpp();
     
     void SetGunDynMaterialCpp(FColor& CurrentColorPower);
+
 };

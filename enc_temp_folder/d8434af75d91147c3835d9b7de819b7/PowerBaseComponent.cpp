@@ -83,9 +83,7 @@ void UPowerBaseComponent::FirePower() //Sobreescribir este método para aplicar e
 	
 	//SetUp the FirePoint and the Direction
 	FirePointTransform = Cast<ASubject15Character>(GetOwner())->ArrowCompCpp->GetComponentTransform(); //Para coger la posicion en el mundo del CMP Arrow
-	
-	CameraPitchRotator = Cast<ASubject15Character>(GetOwner())->ArrowCompCpp->GetForwardVector().Rotation(); //Forward de la camara para disparar hacia adelante
-	//CameraPitchRotator = Cast<ASubject15Character>(GetOwner())->CameraCompCpp->GetForwardVector().Rotation(); //Forward de la camara para disparar hacia adelante
+	CameraPitchRotator = Cast<ASubject15Character>(GetOwner())->CameraCompCpp->GetForwardVector().Rotation(); //Forward de la camara para disparar hacia adelante
 	
 	GetWorld()->SpawnActor<AProjectileClass>(ProjectilePowerType, FirePointTransform.GetLocation(), CameraPitchRotator);
 	
