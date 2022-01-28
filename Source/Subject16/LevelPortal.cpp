@@ -24,17 +24,32 @@ void ALevelPortal::BeginPlay()
 
     // Bind to Box Collision
     BoxCompCpp->OnComponentBeginOverlap.AddDynamic(this, &ALevelPortal::OnOverlap);
+
+    // Get Player Cam
+    if (AllowTravel && GEngine)
+        PlayerCam = GEngine->GetFirstLocalPlayerController(GetWorld())->PlayerCameraManager;
 }
 
 void ALevelPortal::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
 
-    // Fade in through distance
-    ACharacter *Character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
-    auto charLoc = Character->GetActorLocation();
-    auto myLoc = GetActorLocation();
-    FadeOut(FVector::Distance(charLoc, myLoc));
+    // Fade with distance
+    if (AllowTravel && PlayerCam)
+    {
+        auto PlayerCamPos = PlayerCam->GetCameraLocation();
+        auto PortalPos = GetActorLocation();
+
+        auto DistanceToPortal = FVector::Dist(PlayerCamPos, PortalPos);
+
+        if (DistanceToPortal < StartFadeDistance)
+        {
+            auto Value = (StartFadeDistance - DistanceToPortal) / StartFadeDistance * FadeIntensity;
+            Value = Value > 1.f ? 1.f : Value < 0.f ? 0.f : Value;
+
+            PlayerCam->SetManualCameraFade(Value, {0.f, 0.f, 0.f, 0.f}, false);
+        }
+    }
 }
 
 void ALevelPortal::OnOverlap(UPrimitiveComponent *OverlappedComp, AActor *Other,
@@ -80,6 +95,7 @@ void ALevelPortal::OnOverlap(UPrimitiveComponent *OverlappedComp, AActor *Other,
                 GEngine->AddOnScreenDebugMessage(
                     -1, 2.5f, FColor::Red, FString::Printf(TEXT("Portal: Traveling to %s"), *dest));
 
+            // FIXME: if DestinationLevel isn't the exact name of a level, this crashes
             UGameplayStatics::OpenLevel(GetWorld(), pair->DestinationLevel);
 
             break;

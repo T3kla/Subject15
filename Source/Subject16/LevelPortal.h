@@ -12,7 +12,6 @@
 
 // TODO: Sonido ambiente
 // TODO: Sonido de entrada
-// TODO: Luz
 
 UCLASS()
 class SUBJECT16_API ALevelPortal : public AActor
@@ -28,13 +27,19 @@ class SUBJECT16_API ALevelPortal : public AActor
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     UBoxComponent *BoxCompCpp;
 
-    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Level Portal")
     UDataTable *LevelPortalDataTableCpp;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     UParticleSystemComponent *PortalParticleSystemCompCpp;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Level Portal")
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Level Portal")
+    float StartFadeDistance = 400.f;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Level Portal")
+    float FadeIntensity = 2.f;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Level Portal")
     bool AllowTravel = false;
 
     UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "Level Portal")
@@ -42,6 +47,9 @@ class SUBJECT16_API ALevelPortal : public AActor
 
   protected:
     virtual void BeginPlay() override;
+
+  private:
+    APlayerCameraManager *PlayerCam;
 
   public:
     virtual void Tick(float DeltaTime) override;
