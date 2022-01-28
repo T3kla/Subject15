@@ -9,6 +9,8 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Materials/Material.h"
+
+#include "Public/PowerBaseComponent.h"
 #include "Subject15Character.generated.h"
 
 // TODO: Hook to capsule component to get overlap events to look for power pickups
@@ -40,6 +42,12 @@ class SUBJECT16_API ASubject15Character : public ACharacter
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     UMaterial *GunMaterialCpp;
 
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+    UPowerBaseComponent* PowerBaseComponent;
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+        UPowerBaseComponent* PowerBaseComponent2;
+
+
     // UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     // UPowerPushPullComponent *PowerPushPullCompCpp;
 
@@ -62,6 +70,10 @@ class SUBJECT16_API ASubject15Character : public ACharacter
     EPowers SlotTwoPower = EPowers::None;
     EPowers CurrentPower = EPowers::None;
 
+    UPowerBaseComponent* CurrentPowerBase = nullptr;
+    TArray<UPowerBaseComponent*> M_PowerList;
+    //std::vector<UPowerBaseComponent*> M_PowerList;
+
   protected:
     virtual void BeginPlay() override;
 
@@ -79,10 +91,13 @@ class SUBJECT16_API ASubject15Character : public ACharacter
     void OnPowerPressed();
     void OnPowerReleased();
 
-    void ChangePower(EPowers NewPower);
+    void ChangePower(EPowers NewPower, int IntPowerChoose);
 
   public:
     virtual void Tick(float DeltaTime) override;
     virtual void SetupPlayerInputComponent(class UInputComponent *PlayerInputComponent) override;
-  
+   
+    UMaterialInstanceDynamic* GetGunDynMaterialCpp();
+    
+    void SetGunDynMaterialCpp(FColor& CurrentColorPower);
 };
