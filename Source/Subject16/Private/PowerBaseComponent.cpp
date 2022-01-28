@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "../Subject15Character.h"
 #include "PowerBaseComponent.h"
+#include "../Subject15Character.h"
 
 // Sets default values for this component's properties
 UPowerBaseComponent::UPowerBaseComponent()
