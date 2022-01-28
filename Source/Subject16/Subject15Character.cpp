@@ -74,10 +74,18 @@ void ASubject15Character::BeginPlay()
 	// Assign Dyn Material
 	auto Materials = PistolCompCpp->GetMaterials();
 	for (size_t i = 0; i < PistolCompCpp->GetMaterials().Num(); i++)
+	{
 		if (i > 0) // Skip first because it's the gun's body
+		{
 			PistolCompCpp->SetMaterial(i, GunDynMaterialCpp);
+		}
+	}
 
-
+	if (GEngine)
+	{
+		auto* Cam = GEngine->GetFirstLocalPlayerController(GetWorld())->PlayerCameraManager;
+		Cam->StartCameraFade(1.0f, 0.0f, 1.5f, { 0.0f, 0.0f, 0.0f, 0.0f }, false, false);
+	}
 
 	//Setup M_PowerList
 	M_PowerList[0] = PowerBaseComponent0;
