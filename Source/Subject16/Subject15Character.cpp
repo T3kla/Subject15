@@ -70,6 +70,13 @@ void ASubject15Character::BeginPlay()
     for (size_t i = 0; i < PistolCompCpp->GetMaterials().Num(); i++)
         if (i > 0) // Skip first because it's the gun's body
             PistolCompCpp->SetMaterial(i, GunDynMaterialCpp);
+
+    // Fade In
+    if (GEngine)
+    {
+        auto *Cam = GEngine->GetFirstLocalPlayerController(GetWorld())->PlayerCameraManager;
+        Cam->StartCameraFade(1.0f, 0.0f, 1.5f, {0.0f, 0.0f, 0.0f, 0.0f}, false, false);
+    }
 }
 
 void ASubject15Character::MoveVertical(float Amount)
