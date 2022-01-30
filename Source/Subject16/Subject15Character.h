@@ -42,12 +42,13 @@ class SUBJECT16_API ASubject15Character : public ACharacter
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     UMaterial *GunMaterialCpp;
 
-    //TESTING POWERS
+    // TESTING POWERS
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-    UPowerBaseComponent* PowerBaseComponent0;
+    UPowerBaseComponent *PowerBaseComponent0;
+
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-        UPowerBaseComponent* PowerBaseComponent1;
-    //END TESTING
+    UPowerBaseComponent *PowerBaseComponent1;
+    // END TESTING
 
     // UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     // UPowerPushPullComponent *PowerPushPullCompCpp;
@@ -71,9 +72,9 @@ class SUBJECT16_API ASubject15Character : public ACharacter
     EPowers SlotTwoPower = EPowers::None;
     EPowers CurrentPower = EPowers::None;
 
-    UPowerBaseComponent* CurrentPowerBase = nullptr;
-    TArray<UPowerBaseComponent*> M_PowerList;
-    //std::vector<UPowerBaseComponent*> M_PowerList;
+    UPowerBaseComponent *CurrentPowerBase = nullptr;
+    TArray<UPowerBaseComponent *> M_PowerList;
+    // std::vector<UPowerBaseComponent*> M_PowerList;
 
   protected:
     virtual void BeginPlay() override;
@@ -97,9 +98,8 @@ class SUBJECT16_API ASubject15Character : public ACharacter
   public:
     virtual void Tick(float DeltaTime) override;
     virtual void SetupPlayerInputComponent(class UInputComponent *PlayerInputComponent) override;
-   
-    UMaterialInstanceDynamic* GetGunDynMaterialCpp();
-    
-    void SetGunDynMaterialCpp(FColor& CurrentColorPower);
 
+    UMaterialInstanceDynamic *GetGunDynMaterialCpp();
+
+    void SetGunDynMaterialCpp(FColor &CurrentColorPower);
 };

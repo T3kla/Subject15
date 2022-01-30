@@ -73,8 +73,20 @@ void ALevelPortal::OnOverlap(UPrimitiveComponent *OverlappedComp, AActor *Other,
         return;
     }
 
-    UWorld *TheWorld = GetWorld();
-    FString CurrentLevel = TheWorld->GetMapName();
+    if (TravelOverride.Compare({"None"}) != 0)
+    {
+        if (GEngine)
+            GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Red, "Lmao1");
+        UGameplayStatics::OpenLevel(GetWorld(), TravelOverride);
+        return;
+    }
+    else
+    {
+        if (GEngine)
+            GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Red, "Lmao2");
+    }
+
+    FString CurrentLevel = GetWorld()->GetMapName();
 
     TArray<FName> RowNames;
     RowNames = LevelPortalDataTableCpp->GetRowNames();
@@ -98,7 +110,7 @@ void ALevelPortal::OnOverlap(UPrimitiveComponent *OverlappedComp, AActor *Other,
             // FIXME: if DestinationLevel isn't the exact name of a level, this crashes
             UGameplayStatics::OpenLevel(GetWorld(), pair->DestinationLevel);
 
-            break;
+            return;
         }
     }
 }
