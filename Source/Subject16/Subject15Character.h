@@ -10,7 +10,7 @@
 #include "Camera/CameraComponent.h"
 #include "Materials/Material.h"
 
-#include "Public/PowerBaseComponent.h"
+#include "PowerBaseComponent.h"
 #include "Subject15Character.generated.h"
 
 // TODO: Hook to capsule component to get overlap events to look for power pickups
