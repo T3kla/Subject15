@@ -115,7 +115,7 @@ void ASubject15Character::MoveVertical(float Amount)
 void ASubject15Character::MoveHorizontal(float Amount)
 {
     if (Controller && Amount)
-        AddMovementInput(CleanMovement(CameraCompCpp->GetForwardVector()), Amount);
+        AddMovementInput(CleanMovement(CameraCompCpp->GetRightVector()), Amount);
 }
 
 void ASubject15Character::Pitch(float amount)
