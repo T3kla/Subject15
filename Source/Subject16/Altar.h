@@ -28,9 +28,6 @@ class SUBJECT16_API AAltar : public AActor
   public:
     virtual void Tick(float DeltaTime) override;
 
-    UFUNCTION(BlueprintImplementableEvent)
-    void FadeOut(float disToPlayer);
-
   private:
     UFUNCTION()
     void OnOverlap(UPrimitiveComponent *OverlappedComp, AActor *Other,

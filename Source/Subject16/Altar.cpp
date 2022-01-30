@@ -15,7 +15,6 @@ void AAltar::BeginPlay()
 {
     Super::BeginPlay();
 
-    // Bind to Capsule Collision
     CapsuleCompCpp->OnComponentBeginOverlap.AddDynamic(this, &AAltar::OnOverlap);
 }
 
