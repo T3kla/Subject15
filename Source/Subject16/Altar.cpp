@@ -28,7 +28,6 @@ void AAltar::OnOverlap(UPrimitiveComponent *OverlappedComp, AActor *Other,
                        UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep,
                        const FHitResult &SweepResult)
 {
-
     if (Other->ActorHasTag("Player") && GEngine && Power != EPowers::None)
     {
         GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Cyan, "Altar giving power!");

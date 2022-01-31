@@ -15,7 +15,8 @@ void UPowerBaseComponent::BeginPlay()
 
 void UPowerBaseComponent::FirePressed()
 {
-    GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Cyan, "PowerBase FirePressed");
+    if (GEngine)
+        GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Cyan, "PowerBase FirePressed");
 
     if (FireMode == EFireMode::Automatic)
     {
@@ -31,34 +32,40 @@ void UPowerBaseComponent::FirePressed()
         ExecutePower();
     }
     else
-        GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Red, "INVALID FireMode Selected!");
+    {
+        if (GEngine)
+            GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Red, "INVALID FireMode Selected!");
+    }
 }
 
 void UPowerBaseComponent::FireReleased()
 {
-    GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Cyan, "PowerBase FireReleased");
+    if (GEngine)
+        GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Cyan, "PowerBase FireReleased");
 
     GetWorld()->GetTimerManager().ClearTimer(*FireTimerHandle);
 }
 
 void UPowerBaseComponent::ActivatePower()
 {
-    GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Cyan, "PowerBase ActivatePower");
+    if (GEngine)
+        GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Cyan, "PowerBase ActivatePower");
 
     Character->SetPistolColor(PowerColor);
 }
 
 void UPowerBaseComponent::DeactivatePower()
 {
-    GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Cyan, "PowerBase DeactivatePower");
+    if (GEngine)
+        GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Cyan, "PowerBase DeactivatePower");
 
     GetWorld()->GetTimerManager().ClearTimer(*FireTimerHandle);
 }
 
 void UPowerBaseComponent::ExecutePower()
 {
-    FVector a, b;
-    Character->GetCameraShot(a, b);
+    // FVector a, b;
+    // Character->GetPistolShot(a, b);
 
     // // SetUp the FirePoint and the Direction
     // FirePointTransform = Character->ArrowCompCpp->GetComponentTransform();
