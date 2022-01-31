@@ -1,13 +1,12 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "EnumFireMode.h"
-
 #include "ProjectileClass.h"
 #include "PowerBaseComponent.generated.h"
+
+class ASubject15Character;
 
 UCLASS()
 class SUBJECT16_API UPowerBaseComponent : public UActorComponent
@@ -15,50 +14,47 @@ class SUBJECT16_API UPowerBaseComponent : public UActorComponent
     GENERATED_BODY()
 
   public:
-    // Sets default values for this component's properties
     UPowerBaseComponent();
 
-  protected:
-    // Called when the game starts
-    virtual void BeginPlay() override;
-
-  public:
     UFUNCTION()
-    void PullTrigger();
-    UFUNCTION()
-    void ReleaseTrigger();
+    virtual void FirePressed();
 
     UFUNCTION()
-    void ActivatePower();
+    virtual void FireReleased();
+
+    UFUNCTION()
+    virtual void ActivatePower();
+
     UFUNCTION()
     virtual void DeactivatePower();
 
     UFUNCTION()
-    void OnPowerChange();
-
-  private:
-    // ASubject15Character* M_Owner = nullptr;
-
-    FTimerHandle *FireTimerHandle = new FTimerHandle();
-
-    FTransform FirePointTransform;
-    FRotator CameraPitchRotator;
+    virtual void ExecutePower();
 
   protected:
+    virtual void BeginPlay() override;
+    virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     EFireMode FireMode = EFireMode::None;
+
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    float FireRate = 1.f; // Cantidad de balas por segundo
+    float FireRate = 1.f;
 
     UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
-    TSubclassOf<AProjectileClass>
-        ProjectilePowerType; // Projectil que se Spawnea dependiendo del poder
+    TSubclassOf<AProjectileClass> ProjectilePowerType;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     FColor PowerColor;
+
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     AActor *PowerVFX;
 
-    UFUNCTION()
-    virtual void FirePower();
+  private:
+    FTimerHandle *FireTimerHandle = new FTimerHandle();
+
+    ASubject15Character *Character;
+
+    FTransform FirePointTransform;
+    FRotator CameraPitchRotator;
 };

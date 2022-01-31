@@ -1,4 +1,5 @@
 #include "Altar.h"
+#include "Subject15Character.h"
 
 AAltar::AAltar()
 {
@@ -15,7 +16,6 @@ void AAltar::BeginPlay()
 {
     Super::BeginPlay();
 
-    // Bind to Capsule Collision
     CapsuleCompCpp->OnComponentBeginOverlap.AddDynamic(this, &AAltar::OnOverlap);
 }
 
@@ -28,7 +28,9 @@ void AAltar::OnOverlap(UPrimitiveComponent *OverlappedComp, AActor *Other,
                        UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep,
                        const FHitResult &SweepResult)
 {
-
-    if (Other->ActorHasTag("Player") && GEngine)
-        GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Blue, "Altar Overlap");
+    if (Other->ActorHasTag("Player") && GEngine && Power != EPowers::None)
+    {
+        GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Cyan, "Altar giving power!");
+        Cast<ASubject15Character>(Other)->SetSlot(Power);
+    }
 }
