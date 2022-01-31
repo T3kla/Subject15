@@ -62,8 +62,7 @@ void UPowerBaseComponent::ExecutePower()
     //     Cast<ASubject15Character>(GetOwner())->ArrowCompCpp->GetForwardVector().Rotation();
 
     // GetWorld()->SpawnActor<AProjectileClass>(ProjectilePowerType,
-    // FirePointTransform.GetLocation(),
-    //                                          CameraPitchRotator);
+    // FirePointTransform.GetLocation(), CameraPitchRotator);
 
     // if (GEngine)
     // {

@@ -211,12 +211,20 @@ void ASubject15Character::GetCameraShot(FVector &Start, FVector &End)
     RV_TraceParams.bTraceComplex = true;
     RV_TraceParams.bReturnPhysicalMaterial = true;
 
-    GetWorld()->LineTraceSingleByChannel(RV_Hit, A, B, ECC_Pawn, RV_TraceParams);
+    auto result = GetWorld()->LineTraceSingleByChannel(RV_Hit, A, B, ECC_Pawn, RV_TraceParams);
 
-    Start = A;
-    End = RV_Hit.ImpactPoint;
+    if (!result)
+    {
+        Start = A;
+        End = B;
+    }
+    else
+    {
+        Start = A;
+        End = RV_Hit.ImpactPoint;
+    }
 
-    DrawDebugLine(GetWorld(), A, RV_Hit.ImpactPoint, {255, 1, 1, 255}, false, 2.f, 0, 1.f);
+    DrawDebugLine(GetWorld(), Start, End, {255, 1, 1, 255}, false, 2.f, 0, 0.2f);
 }
 
 void ASubject15Character::GetPistolShot(FVector &Start, FVector &End)
@@ -227,5 +235,5 @@ void ASubject15Character::GetPistolShot(FVector &Start, FVector &End)
     Start = PistolMuzzleCompCpp->GetComponentLocation();
     End = B;
 
-    DrawDebugLine(GetWorld(), Start, End, {1, 255, 1, 1}, false, 2.f, 0, 1.f);
+    DrawDebugLine(GetWorld(), Start, End, {1, 255, 1, 1}, false, 2.f, 0, 0.2f);
 }
