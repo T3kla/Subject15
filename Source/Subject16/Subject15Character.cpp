@@ -25,8 +25,10 @@ ASubject15Character::ASubject15Character()
     PistolFXPointCompCpp = CreateDefaultSubobject<USceneComponent>(TEXT("PistolFXPointCompCpp"));
     PistolFXPointCompCpp->SetupAttachment(PistolCompCpp);
 
-    //      Adding powers would be something like
+    PowerBaseComponent0 = CreateDefaultSubobject<UPowerBaseComponent>(TEXT("PowerBase0CompCpp"));
+    PowerBaseComponent1 = CreateDefaultSubobject<UPowerBaseComponent>(TEXT("PowerBase1CompCpp"));
 
+    M_PowerList.Init(nullptr, 2);
     // PowerPushPullCompCpp =
     // CreateDefaultSubobject<UPowerPushPullComponent>(TEXT("PowerPushPullCompCpp"));
 
@@ -68,19 +70,52 @@ void ASubject15Character::BeginPlay()
     // Assign Dyn Material
     auto Materials = PistolCompCpp->GetMaterials();
     for (size_t i = 0; i < PistolCompCpp->GetMaterials().Num(); i++)
+    {
         if (i > 0) // Skip first because it's the gun's body
+        {
             PistolCompCpp->SetMaterial(i, GunDynMaterialCpp);
+        }
+    }
+
+    if (GEngine)
+    {
+        auto *Cam = GEngine->GetFirstLocalPlayerController(GetWorld())->PlayerCameraManager;
+        Cam->StartCameraFade(1.0f, 0.0f, 1.5f, {0.0f, 0.0f, 0.0f, 0.0f}, false, false);
+    }
+
+    // Setup M_PowerList
+    M_PowerList[0] = PowerBaseComponent0;
+    M_PowerList[1] = PowerBaseComponent1;
+
+    // Set up CurrentPower
+    // CurrentPowerBase = PowerBaseComponent0; //Es redundante, se realiza abajo. Por claridad
+    // dejarlo (?) "Init" de Poder al cambiarlo al primero
+    ChangePower(SlotOnePower, 0); // Aqui ya estamos seteando el CurrentPowerBase
+}
+void ASubject15Character::Tick(float DeltaTime)
+{
+    Super::Tick(DeltaTime);
+}
+
+#pragma region MovementRegion
+
+FVector CleanMovement(FVector Forward)
+{
+    auto Result = FVector(Forward.X, Forward.Y, 0.f);
+    Result.Normalize();
+    return Result;
 }
 
 void ASubject15Character::MoveVertical(float Amount)
 {
     if (Controller && Amount)
-        AddMovementInput(CameraCompCpp->GetForwardVector(), Amount);
+        AddMovementInput(CleanMovement(CameraCompCpp->GetForwardVector()), Amount);
 }
+
 void ASubject15Character::MoveHorizontal(float Amount)
 {
     if (Controller && Amount)
-        AddMovementInput(CameraCompCpp->GetRightVector(), Amount);
+        AddMovementInput(CleanMovement(CameraCompCpp->GetRightVector()), Amount);
 }
 
 void ASubject15Character::Pitch(float amount)
@@ -103,45 +138,75 @@ void ASubject15Character::JumpStop()
     StopJumping();
 }
 
+#pragma endregion
+
+#pragma region InputEventsRegion
 void ASubject15Character::SlotOne()
 {
-    if (GunDynMaterialCpp)
-        GunDynMaterialCpp->SetVectorParameterValue("Color", {1.f, 0.f, 0.f, 0.f});
+    if (GEngine)
+        GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Blue, "SlotOne");
 
-    ChangePower(SlotOnePower);
+    // if (GunDynMaterialCpp)
+    //	GunDynMaterialCpp->SetVectorParameterValue("Color", { 1.f, 0.f, 0.f, 0.f });
+    /*CurrentPowerBase->DeactivatePower();*/
+    /*CurrentPowerBase = (M_PowerList[0]);*/
+    ChangePower(SlotOnePower, 0);
 }
 
 void ASubject15Character::SlotTwo()
 {
-    if (GunDynMaterialCpp)
-        GunDynMaterialCpp->SetVectorParameterValue("Color", {0.f, 1.f, 0.f, 0.f});
+    if (GEngine)
+        GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Blue, "SlotTwo");
 
-    ChangePower(SlotTwoPower);
+    /*if (GunDynMaterialCpp)
+        GunDynMaterialCpp->SetVectorParameterValue("Color", { 0.f, 1.f, 0.f, 0.f });*/
+
+    ChangePower(SlotTwoPower, 1);
 }
 
 void ASubject15Character::OnPowerPressed()
 {
     // Call pressed on CurrentPower component
+    CurrentPowerBase->PullTrigger();
 }
 
 void ASubject15Character::OnPowerReleased()
 {
     // Call released on CurrentPower component
+    CurrentPowerBase->ReleaseTrigger();
 }
-
-void ASubject15Character::ChangePower(EPowers NewPower)
-{
-    // Call release on CurrentPower component
-    // Call pressed on NewPower component
-    // Set CurrentPower = NewPower
-}
-
-void ASubject15Character::Tick(float DeltaTime)
-{
-    Super::Tick(DeltaTime);
-}
+#pragma endregion
 
 void ASubject15Character::SetupPlayerInputComponent(UInputComponent *PlayerInputComponent)
 {
     Super::SetupPlayerInputComponent(PlayerInputComponent);
+}
+
+void ASubject15Character::SetGunDynMaterialCpp(
+    FColor &CurrentColorPower) // TODO (Calde): Coger puntero/Ref al GunDynMatCpp en PowerBase y
+                               // cambiarle el color desde alli
+{
+    if (GunDynMaterialCpp)
+        GunDynMaterialCpp->SetVectorParameterValue("Color", CurrentColorPower);
+}
+UMaterialInstanceDynamic *ASubject15Character::GetGunDynMaterialCpp()
+{
+    return GunDynMaterialCpp;
+}
+
+void ASubject15Character::ChangePower(
+    EPowers NewPower, int IntPowerChoose) // MAYBE: Bind event a Inputs WeaponToSlot1 y pasarle los
+                                          // parametros (Ahorra metodos intermedios)
+{
+    // Call release (Desactivate) on CurrentPower component
+    if (CurrentPowerBase)
+    {
+        CurrentPowerBase->DeactivatePower();
+    }
+
+    // Change the CurrentPower
+    CurrentPowerBase = (M_PowerList[IntPowerChoose]);
+
+    // Call OnPowerChange of CurrentPower
+    CurrentPowerBase->OnPowerChange();
 }
