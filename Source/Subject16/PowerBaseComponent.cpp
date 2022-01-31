@@ -4,6 +4,8 @@
 UPowerBaseComponent::UPowerBaseComponent()
 {
     PrimaryComponentTick.bCanEverTick = true;
+
+    Character = Cast<ASubject15Character>(GetOwner());
 }
 
 void UPowerBaseComponent::BeginPlay()
@@ -11,91 +13,65 @@ void UPowerBaseComponent::BeginPlay()
     Super::BeginPlay();
 }
 
-void UPowerBaseComponent::PullTrigger()
+void UPowerBaseComponent::FirePressed()
 {
+    GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Cyan, "PowerBase FirePressed");
+
     if (FireMode == EFireMode::Automatic)
     {
-        GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("AutomaticFire Power!\n"));
         GetWorld()->GetTimerManager().SetTimer(
-            *FireTimerHandle, this, &UPowerBaseComponent::FirePower, 1 / FireRate, true, 0);
+            *FireTimerHandle, this, &UPowerBaseComponent::ExecutePower, 1 / FireRate, true, 0);
     }
-
     else if (FireMode == EFireMode::Semiautomatic)
     {
-        GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("Semi Fire Power!\n"));
-        FirePower();
+        ExecutePower();
     }
-
     else if (FireMode == EFireMode::Laser)
     {
-        GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("LaserMode Power!\n"));
+        ExecutePower();
     }
-    else if (FireMode == EFireMode::None)
-    {
-        GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("INVALID Fire Power!\n"));
-    }
-    else if (FireMode == EFireMode::Default)
-    {
-        GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow,
-                                         TEXT("Default Fire Power! SELECT A FIREMODE TYPE PLS\n"));
-    }
+    else
+        GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Red, "INVALID FireMode Selected!");
 }
 
-void UPowerBaseComponent::ReleaseTrigger()
+void UPowerBaseComponent::FireReleased()
 {
+    GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Cyan, "PowerBase FireReleased");
+
     GetWorld()->GetTimerManager().ClearTimer(*FireTimerHandle);
 }
 
 void UPowerBaseComponent::ActivatePower()
 {
+    GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Cyan, "PowerBase ActivatePower");
+
+    Character->SetPistolColor(PowerColor);
 }
 
-void UPowerBaseComponent::DeactivatePower() // Metodo que se llama cuando se cambia de poder, Setear
-                                            // parametros que se quieren desactivar
+void UPowerBaseComponent::DeactivatePower()
 {
-    ReleaseTrigger(); // Dejar de disparar
+    GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Cyan, "PowerBase DeactivatePower");
+
+    GetWorld()->GetTimerManager().ClearTimer(*FireTimerHandle);
 }
 
-void UPowerBaseComponent::OnPowerChange()
+void UPowerBaseComponent::ExecutePower()
 {
-    if (Cast<ASubject15Character>(GetOwner()))
-    {
-        Cast<ASubject15Character>(GetOwner())->SetGunDynMaterialCpp(PowerColor);
-    }
-}
+    FVector a, b;
+    Character->GetCameraShot(a, b);
 
-void UPowerBaseComponent::FirePower() // Sobreescribir este m�todo para aplicar el efecto deseado
-{
+    // // SetUp the FirePoint and the Direction
+    // FirePointTransform = Character->ArrowCompCpp->GetComponentTransform();
 
-    // SetUp the FirePoint and the Direction
-    FirePointTransform =
-        Cast<ASubject15Character>(GetOwner())
-            ->ArrowCompCpp
-            ->GetComponentTransform(); // Para coger la posicion en el mundo del CMP Arrow
-
-    CameraPitchRotator = Cast<ASubject15Character>(GetOwner())
-                             ->ArrowCompCpp->GetForwardVector()
-                             .Rotation(); // Forward de la camara para disparar hacia adelante
     // CameraPitchRotator =
-    // Cast<ASubject15Character>(GetOwner())->CameraCompCpp->GetForwardVector().Rotation();
-    // //Forward de la camara para disparar hacia adelante
+    //     Cast<ASubject15Character>(GetOwner())->ArrowCompCpp->GetForwardVector().Rotation();
 
-    GetWorld()->SpawnActor<AProjectileClass>(ProjectilePowerType, FirePointTransform.GetLocation(),
-                                             CameraPitchRotator);
+    // GetWorld()->SpawnActor<AProjectileClass>(ProjectilePowerType,
+    // FirePointTransform.GetLocation(),
+    //                                          CameraPitchRotator);
 
-    // FirePointTransform = M_Owner->ArrowCompCpp->GetRelativeTransform();
-    //*CameraPitchRotator =
-    // Cast<ASubject15Character>(GetOwner())->CameraCompCpp->GetComponentRotation();  //Rotacion en
-    // el mundo del CMP Camera
-    ////FQuat auxQuaternion(FirePointTransform.GetRotation().X, CameraPitchRotator->Quaternion().Y,
-    /// FirePointTransform.GetRotation().Z);
-    // FQuat auxQuaternion = FirePointTransform.GetRotation(); //AuxQuat Para mirar forward de la
-    // camara auxQuaternion.Y = CameraPitchRotator->Vector().Y;
-    //	//CameraPitchRotator->Quaternion().Y;
-    // FirePointTransform.SetRotation(auxQuaternion);
-
-    if (GEngine)
-    {
-        GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Black, TEXT("LLEGO Fire Power!\n"));
-    }
+    // if (GEngine)
+    // {
+    //     GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Black, TEXT("LLEGO Fire Power!\n"));
+    // }
 }

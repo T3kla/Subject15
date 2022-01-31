@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "PowersEnum.h"
 #include "GameFramework/Actor.h"
 #include "Components/CapsuleComponent.h"
 #include "Altar.generated.h"
@@ -18,6 +19,9 @@ class SUBJECT16_API AAltar : public AActor
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     UCapsuleComponent *CapsuleCompCpp;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+    EPowers Power;
 
   protected:
     virtual void BeginPlay() override;

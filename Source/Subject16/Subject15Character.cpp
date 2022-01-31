@@ -1,4 +1,6 @@
 #include "Subject15Character.h"
+#include "DrawDebugHelpers.h"
+#include "PowerActivationComponent.h"
 
 ASubject15Character::ASubject15Character()
 {
@@ -25,15 +27,12 @@ ASubject15Character::ASubject15Character()
     PistolFXPointCompCpp = CreateDefaultSubobject<USceneComponent>(TEXT("PistolFXPointCompCpp"));
     PistolFXPointCompCpp->SetupAttachment(PistolCompCpp);
 
-    PowerBaseComponent0 = CreateDefaultSubobject<UPowerBaseComponent>(TEXT("PowerBase0CompCpp"));
-    PowerBaseComponent1 = CreateDefaultSubobject<UPowerBaseComponent>(TEXT("PowerBase1CompCpp"));
-
-    M_PowerList.Init(nullptr, 2);
+    // Powers
     // PowerPushPullCompCpp =
     // CreateDefaultSubobject<UPowerPushPullComponent>(TEXT("PowerPushPullCompCpp"));
 
-    // PowerActivationCompCpp =
-    // CreateDefaultSubobject<UPowerActivationComponent>(TEXT("PowerActivationCompCpp"));
+    PowerActivationCompCpp =
+        CreateDefaultSubobject<UPowerActivationComponent>(TEXT("PowerActivationCompCpp"));
 
     // PowerExplosionCompCpp =
     // CreateDefaultSubobject<UPowerExplosionComponent>(TEXT("PowerExplosionCompCpp"));
@@ -58,39 +57,27 @@ void ASubject15Character::BeginPlay()
     InputComponent->BindAction("Jump", IE_Released, this, &ASubject15Character::JumpStop);
     InputComponent->BindAction("WeaponToSlot1", IE_Pressed, this, &ASubject15Character::SlotOne);
     InputComponent->BindAction("WeaponToSlot2", IE_Pressed, this, &ASubject15Character::SlotTwo);
-    InputComponent->BindAction("Shoot", IE_Pressed, this, &ASubject15Character::OnPowerPressed);
-    InputComponent->BindAction("Shoot", IE_Released, this, &ASubject15Character::OnPowerReleased);
+    InputComponent->BindAction("Fire", IE_Pressed, this, &ASubject15Character::FirePressed);
+    InputComponent->BindAction("Fire", IE_Released, this, &ASubject15Character::FireReleased);
 
     if (!GunMaterialCpp)
         return;
 
     // Create Dyn Material
-    GunDynMaterialCpp = UMaterialInstanceDynamic::Create(GunMaterialCpp, this);
+    PistolDynMaterial = UMaterialInstanceDynamic::Create(GunMaterialCpp, this);
 
     // Assign Dyn Material
     auto Materials = PistolCompCpp->GetMaterials();
     for (size_t i = 0; i < PistolCompCpp->GetMaterials().Num(); i++)
-    {
         if (i > 0) // Skip first because it's the gun's body
-        {
-            PistolCompCpp->SetMaterial(i, GunDynMaterialCpp);
-        }
-    }
+            PistolCompCpp->SetMaterial(i, PistolDynMaterial);
 
+    // Camera Fade In at level start
     if (GEngine)
     {
         auto *Cam = GEngine->GetFirstLocalPlayerController(GetWorld())->PlayerCameraManager;
         Cam->StartCameraFade(1.0f, 0.0f, 1.5f, {0.0f, 0.0f, 0.0f, 0.0f}, false, false);
     }
-
-    // Setup M_PowerList
-    M_PowerList[0] = PowerBaseComponent0;
-    M_PowerList[1] = PowerBaseComponent1;
-
-    // Set up CurrentPower
-    // CurrentPowerBase = PowerBaseComponent0; //Es redundante, se realiza abajo. Por claridad
-    // dejarlo (?) "Init" de Poder al cambiarlo al primero
-    ChangePower(SlotOnePower, 0); // Aqui ya estamos seteando el CurrentPowerBase
 }
 void ASubject15Character::Tick(float DeltaTime)
 {
@@ -118,14 +105,14 @@ void ASubject15Character::MoveHorizontal(float Amount)
         AddMovementInput(CleanMovement(CameraCompCpp->GetRightVector()), Amount);
 }
 
-void ASubject15Character::Pitch(float amount)
+void ASubject15Character::Pitch(float Amount)
 {
-    AddControllerPitchInput(200.f * amount * GetWorld()->GetDeltaSeconds());
+    AddControllerPitchInput(150.f * Amount * GetWorld()->GetDeltaSeconds());
 }
 
-void ASubject15Character::Yaw(float amount)
+void ASubject15Character::Yaw(float Amount)
 {
-    AddControllerYawInput(200.f * amount * GetWorld()->GetDeltaSeconds());
+    AddControllerYawInput(200.f * Amount * GetWorld()->GetDeltaSeconds());
 }
 
 void ASubject15Character::JumpStart()
@@ -141,72 +128,94 @@ void ASubject15Character::JumpStop()
 #pragma endregion
 
 #pragma region InputEventsRegion
+
 void ASubject15Character::SlotOne()
 {
-    if (GEngine)
-        GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Blue, "SlotOne");
-
-    // if (GunDynMaterialCpp)
-    //	GunDynMaterialCpp->SetVectorParameterValue("Color", { 1.f, 0.f, 0.f, 0.f });
-    /*CurrentPowerBase->DeactivatePower();*/
-    /*CurrentPowerBase = (M_PowerList[0]);*/
-    ChangePower(SlotOnePower, 0);
+    CurrentSlot = 1;
+    ChangePower(SlotOnePower);
 }
 
 void ASubject15Character::SlotTwo()
 {
-    if (GEngine)
-        GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Blue, "SlotTwo");
-
-    /*if (GunDynMaterialCpp)
-        GunDynMaterialCpp->SetVectorParameterValue("Color", { 0.f, 1.f, 0.f, 0.f });*/
-
-    ChangePower(SlotTwoPower, 1);
+    CurrentSlot = 2;
+    ChangePower(SlotTwoPower);
 }
 
-void ASubject15Character::OnPowerPressed()
+void ASubject15Character::FirePressed()
 {
-    // Call pressed on CurrentPower component
-    CurrentPowerBase->PullTrigger();
+    if (CurrentPower)
+        CurrentPower->FirePressed();
 }
 
-void ASubject15Character::OnPowerReleased()
+void ASubject15Character::FireReleased()
 {
-    // Call released on CurrentPower component
-    CurrentPowerBase->ReleaseTrigger();
+    if (CurrentPower)
+        CurrentPower->FireReleased();
 }
+
 #pragma endregion
 
-void ASubject15Character::SetupPlayerInputComponent(UInputComponent *PlayerInputComponent)
+void ASubject15Character::SetSlot(EPowers NewPower)
 {
-    Super::SetupPlayerInputComponent(PlayerInputComponent);
+    if (CurrentSlot == 1)
+        SlotOnePower = NewPower;
+    else if (CurrentSlot == 2)
+        SlotTwoPower = NewPower;
+
+    ChangePower(NewPower);
 }
 
-void ASubject15Character::SetGunDynMaterialCpp(
-    FColor &CurrentColorPower) // TODO (Calde): Coger puntero/Ref al GunDynMatCpp en PowerBase y
-                               // cambiarle el color desde alli
+void ASubject15Character::SetPistolColor(const FColor &CurrentColorPower)
 {
-    if (GunDynMaterialCpp)
-        GunDynMaterialCpp->SetVectorParameterValue("Color", CurrentColorPower);
-}
-UMaterialInstanceDynamic *ASubject15Character::GetGunDynMaterialCpp()
-{
-    return GunDynMaterialCpp;
+    if (PistolDynMaterial)
+        PistolDynMaterial->SetVectorParameterValue("Color", CurrentColorPower);
 }
 
-void ASubject15Character::ChangePower(
-    EPowers NewPower, int IntPowerChoose) // MAYBE: Bind event a Inputs WeaponToSlot1 y pasarle los
-                                          // parametros (Ahorra metodos intermedios)
+void ASubject15Character::ChangePower(EPowers NewPower)
 {
-    // Call release (Desactivate) on CurrentPower component
-    if (CurrentPowerBase)
+    if (CurrentPowerEnum == NewPower)
+        return;
+
+    // Deactivate old Power
+    if (CurrentPower)
+        CurrentPower->DeactivatePower();
+
+    // Select new Current
+    switch (NewPower)
     {
-        CurrentPowerBase->DeactivatePower();
+    case EPowers::Activation:
+        CurrentPower = PowerActivationCompCpp;
+        break;
+    default:
+        CurrentPower = nullptr;
+        SetPistolColor({1, 1, 1, 1});
+        break;
     }
 
-    // Change the CurrentPower
-    CurrentPowerBase = (M_PowerList[IntPowerChoose]);
+    // Activate new Power
+    if (CurrentPower)
+        CurrentPower->ActivatePower();
 
-    // Call OnPowerChange of CurrentPower
-    CurrentPowerBase->OnPowerChange();
+    CurrentPowerEnum = NewPower;
+}
+
+void ASubject15Character::GetCameraShot(FVector &Start, FVector &End)
+{
+    FVector A = CameraCompCpp->GetComponentLocation();
+    FVector B = A + CameraCompCpp->GetForwardVector() * 10000.f;
+
+    FHitResult RV_Hit(ForceInit);
+    FCollisionQueryParams RV_TraceParams =
+        FCollisionQueryParams(FName(TEXT("RV_Trace")), true, this);
+
+    RV_TraceParams.bTraceComplex = true;
+    RV_TraceParams.bReturnPhysicalMaterial = true;
+
+    bool DidTrace = GetWorld()->LineTraceSingleByChannel(RV_Hit, A, B, ECC_Pawn, RV_TraceParams);
+
+    DrawDebugLine(GetWorld(), A, RV_Hit.ImpactPoint, {1, 1, 1, 1}, false, 2.f);
+}
+
+void ASubject15Character::GetPistolShot(FVector &Start, FVector &End)
+{
 }
