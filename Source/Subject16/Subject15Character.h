@@ -31,7 +31,7 @@ class SUBJECT16_API ASubject15Character : public ACharacter
     UStaticMeshComponent *PistolCompCpp;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-    UArrowComponent *ArrowCompCpp;
+    UArrowComponent *PistolMuzzleCompCpp;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     USceneComponent *PistolFXPointCompCpp; // Effects attatch to this

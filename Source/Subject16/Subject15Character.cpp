@@ -21,8 +21,8 @@ ASubject15Character::ASubject15Character()
     CameraCompCpp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraCompCpp"));
     CameraCompCpp->SetupAttachment(SpringArmCompCpp, USpringArmComponent::SocketName);
 
-    ArrowCompCpp = CreateDefaultSubobject<UArrowComponent>(TEXT("ArrowCompCpp"));
-    ArrowCompCpp->SetupAttachment(PistolCompCpp);
+    PistolMuzzleCompCpp = CreateDefaultSubobject<UArrowComponent>(TEXT("PistolMuzzleCompCpp"));
+    PistolMuzzleCompCpp->SetupAttachment(PistolCompCpp);
 
     PistolFXPointCompCpp = CreateDefaultSubobject<USceneComponent>(TEXT("PistolFXPointCompCpp"));
     PistolFXPointCompCpp->SetupAttachment(PistolCompCpp);
@@ -211,11 +211,21 @@ void ASubject15Character::GetCameraShot(FVector &Start, FVector &End)
     RV_TraceParams.bTraceComplex = true;
     RV_TraceParams.bReturnPhysicalMaterial = true;
 
-    bool DidTrace = GetWorld()->LineTraceSingleByChannel(RV_Hit, A, B, ECC_Pawn, RV_TraceParams);
+    GetWorld()->LineTraceSingleByChannel(RV_Hit, A, B, ECC_Pawn, RV_TraceParams);
 
-    DrawDebugLine(GetWorld(), A, RV_Hit.ImpactPoint, {1, 1, 1, 1}, false, 2.f);
+    Start = A;
+    End = RV_Hit.ImpactPoint;
+
+    DrawDebugLine(GetWorld(), A, RV_Hit.ImpactPoint, {255, 1, 1, 255}, false, 2.f, 0, 1.f);
 }
 
 void ASubject15Character::GetPistolShot(FVector &Start, FVector &End)
 {
+    FVector A, B;
+    GetCameraShot(A, B);
+
+    Start = PistolMuzzleCompCpp->GetComponentLocation();
+    End = B;
+
+    DrawDebugLine(GetWorld(), Start, End, {1, 255, 1, 1}, false, 2.f, 0, 1.f);
 }
