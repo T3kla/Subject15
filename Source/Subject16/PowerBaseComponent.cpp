@@ -15,9 +15,6 @@ void UPowerBaseComponent::BeginPlay()
 
 void UPowerBaseComponent::FirePressed()
 {
-    if (GEngine)
-        GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Cyan, "PowerBase FirePressed");
-
     if (FireMode == EFireMode::Automatic)
     {
         GetWorld()->GetTimerManager().SetTimer(
@@ -40,25 +37,16 @@ void UPowerBaseComponent::FirePressed()
 
 void UPowerBaseComponent::FireReleased()
 {
-    if (GEngine)
-        GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Cyan, "PowerBase FireReleased");
-
     GetWorld()->GetTimerManager().ClearTimer(*FireTimerHandle);
 }
 
 void UPowerBaseComponent::ActivatePower()
 {
-    if (GEngine)
-        GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Cyan, "PowerBase ActivatePower");
-
     Character->SetPistolColor(PowerColor);
 }
 
 void UPowerBaseComponent::DeactivatePower()
 {
-    if (GEngine)
-        GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Cyan, "PowerBase DeactivatePower");
-
     GetWorld()->GetTimerManager().ClearTimer(*FireTimerHandle);
 }
 

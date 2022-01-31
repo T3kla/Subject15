@@ -75,15 +75,8 @@ void ALevelPortal::OnOverlap(UPrimitiveComponent *OverlappedComp, AActor *Other,
 
     if (TravelOverride.Compare({"None"}) != 0)
     {
-        if (GEngine)
-            GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Red, "Lmao1");
         UGameplayStatics::OpenLevel(GetWorld(), TravelOverride);
         return;
-    }
-    else
-    {
-        if (GEngine)
-            GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Red, "Lmao2");
     }
 
     FString CurrentLevel = GetWorld()->GetMapName();
@@ -103,13 +96,8 @@ void ALevelPortal::OnOverlap(UPrimitiveComponent *OverlappedComp, AActor *Other,
 
         if (CurrentLevel.Contains(orig))
         {
-            if (GEngine)
-                GEngine->AddOnScreenDebugMessage(
-                    -1, 2.5f, FColor::Red, FString::Printf(TEXT("Portal: Traveling to %s"), *dest));
-
             // FIXME: if DestinationLevel isn't the exact name of a level, this crashes
             UGameplayStatics::OpenLevel(GetWorld(), pair->DestinationLevel);
-
             return;
         }
     }
