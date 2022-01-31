@@ -13,6 +13,11 @@ void UPowerBaseComponent::BeginPlay()
     Super::BeginPlay();
 }
 
+void UPowerBaseComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+{
+    Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+}
+
 void UPowerBaseComponent::FirePressed()
 {
     if (GEngine)

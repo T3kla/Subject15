@@ -33,6 +33,7 @@ class SUBJECT16_API UPowerBaseComponent : public UActorComponent
 
   protected:
     virtual void BeginPlay() override;
+    virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     EFireMode FireMode = EFireMode::None;
