@@ -9,12 +9,9 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Materials/Material.h"
-
 #include "PowerBaseComponent.h"
+#include "PowerActivationComponent.h"
 #include "Subject15Character.generated.h"
-
-// TODO: Hook to capsule component to get overlap events to look for power pickups
-// TODO: Add every power to the thing
 
 UCLASS()
 class SUBJECT16_API ASubject15Character : public ACharacter
@@ -34,7 +31,7 @@ class SUBJECT16_API ASubject15Character : public ACharacter
     UStaticMeshComponent *PistolCompCpp;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-    UArrowComponent *ArrowCompCpp;
+    UArrowComponent *PistolMuzzleCompCpp;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     USceneComponent *PistolFXPointCompCpp; // Effects attatch to this
@@ -42,19 +39,11 @@ class SUBJECT16_API ASubject15Character : public ACharacter
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     UMaterial *GunMaterialCpp;
 
-    // TESTING POWERS
-    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-    UPowerBaseComponent *PowerBaseComponent0;
-
-    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-    UPowerBaseComponent *PowerBaseComponent1;
-    // END TESTING
-
     // UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     // UPowerPushPullComponent *PowerPushPullCompCpp;
 
-    // UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-    // UPowerActivationComponent *PowerActivationCompCpp;
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+    UPowerActivationComponent *PowerActivationCompCpp;
 
     // UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     // UPowerExplosionComponent *PowerExplosionCompCpp;
@@ -65,20 +54,23 @@ class SUBJECT16_API ASubject15Character : public ACharacter
     // UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     // UPowerPhaseComponent *PowerPhaseCompCpp;
 
-  private:
-    UMaterialInstanceDynamic *GunDynMaterialCpp;
+    UFUNCTION()
+    void SetSlot(EPowers NewPower);
 
-    EPowers SlotOnePower = EPowers::None;
-    EPowers SlotTwoPower = EPowers::None;
-    EPowers CurrentPower = EPowers::None;
+    UFUNCTION()
+    void SetPistolColor(const FColor &CurrentColorPower);
 
-    UPowerBaseComponent *CurrentPowerBase = nullptr;
-    TArray<UPowerBaseComponent *> M_PowerList;
-    // std::vector<UPowerBaseComponent*> M_PowerList;
+    UFUNCTION()
+    void GetCameraShot(FVector &Start, FVector &End);
+
+    UFUNCTION()
+    void GetPistolShot(FVector &Start, FVector &End);
 
   protected:
     virtual void BeginPlay() override;
+    virtual void Tick(float DeltaTime) override;
 
+  private:
     // Axes
     void MoveVertical(float Amount);
     void MoveHorizontal(float Amount);
@@ -90,16 +82,19 @@ class SUBJECT16_API ASubject15Character : public ACharacter
     void JumpStop();
     void SlotOne();
     void SlotTwo();
-    void OnPowerPressed();
-    void OnPowerReleased();
+    void FirePressed();
+    void FireReleased();
 
-    void ChangePower(EPowers NewPower, int IntPowerChoose);
+    void ChangePower(EPowers NewPower);
 
-  public:
-    virtual void Tick(float DeltaTime) override;
-    virtual void SetupPlayerInputComponent(class UInputComponent *PlayerInputComponent) override;
+    // Dyn mat for gun color change
+    UMaterialInstanceDynamic *PistolDynMaterial;
 
-    UMaterialInstanceDynamic *GetGunDynMaterialCpp();
-
-    void SetGunDynMaterialCpp(FColor &CurrentColorPower);
+    // Power Change variables
+    EPowers SlotOnePower = EPowers::None;
+    EPowers SlotTwoPower = EPowers::None;
+    EPowers CurrentPowerEnum = EPowers::None;
+    uint8 CurrentSlot = 1;
+    UPowerBaseComponent *CurrentPower = nullptr;
+    TArray<UPowerBaseComponent *> PowerArray;
 };
