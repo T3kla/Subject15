@@ -29,8 +29,5 @@ void AAltar::OnOverlap(UPrimitiveComponent *OverlappedComp, AActor *Other,
                        const FHitResult &SweepResult)
 {
     if (Other->ActorHasTag("Player") && GEngine && Power != EPowers::None)
-    {
-        GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Cyan, "Altar giving power!");
         Cast<ASubject15Character>(Other)->SetSlot(Power);
-    }
 }
