@@ -16,4 +16,10 @@ class SUBJECT16_API AProjectileActivation : public AProjectileBase
 
   protected:
     virtual void BeginPlay() override;
+
+  private:
+    UFUNCTION()
+    void OnOverlap(UPrimitiveComponent *OverlappedComp, AActor *Other,
+                   UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+                   const FHitResult &SweepResult);
 };
