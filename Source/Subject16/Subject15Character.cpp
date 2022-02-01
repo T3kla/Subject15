@@ -247,10 +247,6 @@ bool ASubject15Character::GetPistolShot(FVector &Start, FVector &End, FHitResult
     FVector A, B;
     auto hit = GetCameraShot(A, B, HitResult);
 
-    if (GEngine)
-        GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Yellow,
-                                         FString::Printf(TEXT("%d"), HitResult));
-
     Start = PistolMuzzleCompCpp->GetComponentLocation();
     End = B;
 
