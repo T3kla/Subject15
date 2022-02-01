@@ -26,12 +26,17 @@ void ALevelPortal::BeginPlay()
     BoxCompCpp->OnComponentBeginOverlap.AddDynamic(this, &ALevelPortal::OnOverlap);
 
     // Get Player Cam
+    auto *Char = GEngine->GetFirstLocalPlayerController(GetWorld());
     if (AllowTravel && GEngine)
-        PlayerCam = GEngine->GetFirstLocalPlayerController(GetWorld())->PlayerCameraManager;
+    {
+        PlayerCam = Char->PlayerCameraManager;
+    }
     else
-        GEngine->GetFirstLocalPlayerController(GetWorld())
-            ->GetPawn()
-            ->SetActorLocation(GetActorLocation() + GetActorForwardVector() * 100.f);
+    {
+        auto CharPawn = Char->GetPawn();
+        CharPawn->SetActorLocation(GetActorLocation() + GetActorForwardVector() * 100.f);
+        Char->SetControlRotation(GetActorRotation());
+    }
 }
 
 void ALevelPortal::Tick(float DeltaTime)
