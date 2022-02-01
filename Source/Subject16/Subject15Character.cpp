@@ -109,12 +109,12 @@ void ASubject15Character::MoveHorizontal(float Amount)
 
 void ASubject15Character::Pitch(float Amount)
 {
-    AddControllerPitchInput(150.f * Amount * GetWorld()->GetDeltaSeconds());
+    AddControllerPitchInput(100.f * Amount * GetWorld()->GetDeltaSeconds());
 }
 
 void ASubject15Character::Yaw(float Amount)
 {
-    AddControllerYawInput(200.f * Amount * GetWorld()->GetDeltaSeconds());
+    AddControllerYawInput(100.f * Amount * GetWorld()->GetDeltaSeconds());
 }
 
 void ASubject15Character::JumpStart()
