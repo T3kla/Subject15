@@ -16,6 +16,12 @@ public:
 	// Sets default values for this component's properties
 	UPowerExplosionComponent();
 
+	virtual void FirePressed() override;
+	virtual void FireReleased() override;
+	virtual void ActivatePower() override;
+	virtual void DeactivatePower() override;
+	virtual void ExecutePower() override;
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;		

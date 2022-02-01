@@ -14,7 +14,29 @@ UPowerExplosionComponent::UPowerExplosionComponent()
 void UPowerExplosionComponent::BeginPlay()
 {
 	Super::BeginPlay();
+}
 
-	// ...
-	
+void UPowerExplosionComponent::FirePressed()
+{
+	Super::FirePressed();
+}
+
+void UPowerExplosionComponent::FireReleased()
+{
+	Super::FireReleased();
+}
+
+void UPowerExplosionComponent::ActivatePower()
+{
+	Super::ActivatePower();
+}
+
+void UPowerExplosionComponent::DeactivatePower()
+{
+	Super::DeactivatePower();
+}
+
+void UPowerExplosionComponent::ExecutePower()
+{
+	Super::ExecutePower();
 }
