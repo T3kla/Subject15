@@ -50,19 +50,7 @@ class SUBJECT16_API UPowerBaseComponent : public UActorComponent
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     AActor *PowerVFX;
 
-<<<<<<< Updated upstream
     FTimerHandle *FireTimerHandle = new FTimerHandle();
-=======
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UParticleSystem* TemplateParticle;
-
-    void SetCooldown(float Modifier = 0.f);
-    void ResetCooldown();
-
-    FTimerHandle AutomaticTimer;
-    FTimerHandle CooldownTimer;
-    bool IsInCooldown = false;
->>>>>>> Stashed changes
 
     ASubject15Character *Character;
 };

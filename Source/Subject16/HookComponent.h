@@ -39,7 +39,6 @@ protected:
 public:
 		virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 		virtual void ExecutePower() override;
-		virtual void ActivatePower() override;
 
 		UPROPERTY()
 				UParticleSystemComponent* uParticleSystem;

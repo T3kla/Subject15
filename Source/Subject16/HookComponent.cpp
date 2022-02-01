@@ -11,16 +11,6 @@ UHookComponent::UHookComponent()
 		m_hookLocation = FVector(0, 0, 0);
 }
 
-void UHookComponent::BeginPlay()
-{
-    Super::BeginPlay();
-
-    /*Init pointers*/
-    uParticleSystem = Character->PistolParticleSystem;
-    uArrowComponent = Character->PistolMuzzleCompCpp;
-    ResetGrappleHook();
-}
-
 void UHookComponent::ShootGrappleHook()
 {
 		uParticleSystem->SetVisibility(true);
@@ -55,7 +45,6 @@ void UHookComponent::ShowHook()
 		}
 }
 
-<<<<<<< Updated upstream
 void UHookComponent::BeginPlay()
 {
 		Super::BeginPlay();
@@ -70,13 +59,6 @@ void UHookComponent::ExecutePower()
 {
 		FVector A, B, InitForce(0, 0, 500);
 		FTimerHandle TimerHandleInit, TimerHandleForce;
-=======
-void UHookComponent::ExecutePower()
-{
-    FVector A, B, InitForce(0, 0, 500);
-    FHitResult Res;
-    FTimerHandle TimerInitHandle, TimerForceHandle;
->>>>>>> Stashed changes
 
 		if (Character->GetCameraShot(A, B))
 		{
@@ -84,7 +66,6 @@ void UHookComponent::ExecutePower()
 				ShootGrappleHook();
 				LaunchCharacter(InitForce, true);
 
-<<<<<<< Updated upstream
 				GetWorld()->GetTimerManager().SetTimer(TimerHandleInit, this, &UHookComponent::LaunchCharacterForce, 0.2f, false);
 				GetWorld()->GetTimerManager().SetTimer(TimerHandleForce, this, &UHookComponent::ResetGrappleHook, 0.5f, false);
 		}
@@ -93,25 +74,6 @@ void UHookComponent::ExecutePower()
 }
 
 void UHookComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-=======
-        GetWorld()->GetTimerManager().SetTimer(TimerInitHandle, this,
-                                               &UHookComponent::LaunchCharacterForce, 0.2f, false);
-        GetWorld()->GetTimerManager().SetTimer(TimerForceHandle, this,
-                                               &UHookComponent::ResetGrappleHook, 0.5f, false);
-    }
-    else
-        ResetGrappleHook();
-}
-
-void UHookComponent::ActivatePower()
-{
-    Character->PistolParticleSystem->SetTemplate(TemplateParticle);
-    Character->SetPistolColor(PowerColor);
-}
-
-void UHookComponent::TickComponent(float DeltaTime, ELevelTick TickType,
-                                   FActorComponentTickFunction *ThisTickFunction)
->>>>>>> Stashed changes
 {
 		Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 

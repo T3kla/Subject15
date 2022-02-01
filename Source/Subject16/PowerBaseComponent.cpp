@@ -13,19 +13,13 @@ void UPowerBaseComponent::BeginPlay()
     Super::BeginPlay();
 }
 
-<<<<<<< Updated upstream
 void UPowerBaseComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-=======
-void UPowerBaseComponent::TickComponent(float DeltaTime, ELevelTick TickType,
-FActorComponentTickFunction *ThisTickFunction)
->>>>>>> Stashed changes
 {
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
 void UPowerBaseComponent::FirePressed()
 {
-<<<<<<< Updated upstream
     if (FireMode == EFireMode::Automatic)
     {
         GetWorld()->GetTimerManager().SetTimer(
@@ -41,32 +35,6 @@ void UPowerBaseComponent::FirePressed()
     }
     else
     {
-=======
-    switch (FireMode) {
-    case EFireMode::Automatic:
-        if (!IsInCooldown)
-        {
-            GetWorld()->GetTimerManager().SetTimer(
-                AutomaticTimer, this, &UPowerBaseComponent::ExecutePower, FireRate, true, 0.f);
-            SetCooldown();
-        }
-        break;
-    case EFireMode::Semiautomatic:
-        if (!IsInCooldown)
-        {
-            ExecutePower();
-            SetCooldown();
-        }
-        break;
-    case EFireMode::Laser:
-        if (!IsInCooldown)
-        {
-            ExecutePower();
-            SetCooldown();
-        }
-        break;
-    default:
->>>>>>> Stashed changes
         if (GEngine)
             GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Red, "INVALID FireMode Selected!");
     }
@@ -84,11 +52,7 @@ void UPowerBaseComponent::ActivatePower()
 
 void UPowerBaseComponent::DeactivatePower()
 {
-<<<<<<< Updated upstream
     GetWorld()->GetTimerManager().ClearTimer(*FireTimerHandle);
-=======
-
->>>>>>> Stashed changes
 }
 
 void UPowerBaseComponent::ExecutePower()
