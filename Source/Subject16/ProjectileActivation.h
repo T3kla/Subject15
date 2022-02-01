@@ -4,6 +4,8 @@
 #include "ProjectileBase.h"
 #include "ProjectileActivation.generated.h"
 
+class UParticleSystem;
+
 UCLASS()
 class SUBJECT16_API AProjectileActivation : public AProjectileBase
 {
@@ -14,7 +16,13 @@ class SUBJECT16_API AProjectileActivation : public AProjectileBase
 
     virtual void Tick(float DeltaTime) override;
 
-    UPROPERTY()
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+    UParticleSystem *Explosion;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+    FVector ExplosionScale = {.6f, .6f, .6f};
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     float Lifetime = 2.f;
 
   protected:
@@ -26,6 +34,5 @@ class SUBJECT16_API AProjectileActivation : public AProjectileBase
                    UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep,
                    const FHitResult &SweepResult);
 
-     void Destroy();
-
+    void DestroyProjectile();
 };

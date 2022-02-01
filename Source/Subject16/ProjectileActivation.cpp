@@ -1,8 +1,10 @@
 #include "ProjectileActivation.h"
+#include "Particles/ParticleSystem.h"
+#include "Kismet/GameplayStatics.h"
 
 AProjectileActivation::AProjectileActivation()
 {
-    PrimaryActorTick.bCanEverTick = true;
+    PrimaryActorTick.bCanEverTick = false;
 }
 
 void AProjectileActivation::BeginPlay()
@@ -14,8 +16,8 @@ void AProjectileActivation::BeginPlay()
 
     // Lifetime
     FTimerHandle LifetimeTimer;
-    GetWorld()->GetTimerManager().SetTimer(LifetimeTimer, this, &AProjectileActivation::Destroy,
-                                           Lifetime, false);
+    GetWorld()->GetTimerManager().SetTimer(
+        LifetimeTimer, this, &AProjectileActivation::DestroyProjectile, Lifetime, false);
 }
 
 void AProjectileActivation::Tick(float DeltaTime)
@@ -23,8 +25,14 @@ void AProjectileActivation::Tick(float DeltaTime)
     Super::Tick(DeltaTime);
 }
 
-void AProjectileActivation::Destroy()
+void AProjectileActivation::DestroyProjectile()
 {
+    // Spawn Explosion
+    FTransform Transform(GetActorRotation(), GetActorLocation(), {.6f, .6f, .6f});
+    UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Explosion, Transform, true,
+                                             EPSCPoolMethod::AutoRelease, true);
+
+    // AActor Destroy
     Super::Destroy();
 }
 
@@ -32,5 +40,5 @@ void AProjectileActivation::OnOverlap(UPrimitiveComponent *OverlappedComp, AActo
                                       UPrimitiveComponent *OtherComp, int32 OtherBodyIndex,
                                       bool bFromSweep, const FHitResult &SweepResult)
 {
-    Destroy();
+    DestroyProjectile();
 }
