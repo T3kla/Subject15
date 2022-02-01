@@ -109,12 +109,12 @@ void ASubject15Character::MoveHorizontal(float Amount)
 
 void ASubject15Character::Pitch(float Amount)
 {
-    AddControllerPitchInput(150.f * Amount * GetWorld()->GetDeltaSeconds());
+    AddControllerPitchInput(100.f * Amount * GetWorld()->GetDeltaSeconds());
 }
 
 void ASubject15Character::Yaw(float Amount)
 {
-    AddControllerYawInput(200.f * Amount * GetWorld()->GetDeltaSeconds());
+    AddControllerYawInput(100.f * Amount * GetWorld()->GetDeltaSeconds());
 }
 
 void ASubject15Character::JumpStart()
@@ -188,11 +188,9 @@ void ASubject15Character::ChangePower(EPowers NewPower)
     case EPowers::Activation:
         CurrentPower = PowerActivationCompCpp;
         break;
-
     case EPowers::Hook:
         CurrentPower = PowerHookCompCpp;
         break;
-
     case EPowers::Explosion:
         CurrentPower = PowerExplosionCompCpp;
         break;
@@ -221,9 +219,9 @@ bool ASubject15Character::GetCameraShot(FVector &Start, FVector &End, FHitResult
     RV_TraceParams.bTraceComplex = true;
     RV_TraceParams.bReturnPhysicalMaterial = true;
 
-    auto hit = GetWorld()->LineTraceSingleByChannel(RV_Hit, A, B, ECC_Pawn, RV_TraceParams);
+    auto Hit = GetWorld()->LineTraceSingleByChannel(RV_Hit, A, B, ECC_Pawn, RV_TraceParams);
 
-    if (!hit)
+    if (!Hit)
     {
         Start = A;
         End = B;
@@ -236,17 +234,16 @@ bool ASubject15Character::GetCameraShot(FVector &Start, FVector &End, FHitResult
     }
 
     DrawDebugLine(GetWorld(), Start, End, {255, 1, 1, 255}, false, 2.f, 0, 1.f);
-    return hit;
+    return Hit;
 }
 
 bool ASubject15Character::GetPistolShot(FVector &Start, FVector &End, FHitResult &HitResult)
 {
-    FVector A, B;
-    auto hit = GetCameraShot(A, B, HitResult);
+    FVector A;
+    auto Hit = GetCameraShot(A, End, HitResult);
 
     Start = PistolMuzzleCompCpp->GetComponentLocation();
-    End = B;
 
     DrawDebugLine(GetWorld(), Start, End, {1, 255, 1, 1}, false, 2.f, 0, 1.f);
-    return hit;
+    return Hit;
 }
