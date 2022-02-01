@@ -65,6 +65,15 @@ void ALevelPortal::OnOverlap(UPrimitiveComponent *OverlappedComp, AActor *Other,
         return;
     }
 
+    if (Other->ActorHasTag("Player"))
+    {
+        if (GEngine)
+            GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Yellow,
+                                             "Portal: Actor wasn't player!");
+
+        return;
+    }
+
     if (!LevelPortalDataTableCpp)
     {
         if (GEngine)
