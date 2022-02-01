@@ -28,6 +28,10 @@ void ALevelPortal::BeginPlay()
     // Get Player Cam
     if (AllowTravel && GEngine)
         PlayerCam = GEngine->GetFirstLocalPlayerController(GetWorld())->PlayerCameraManager;
+    else
+        GEngine->GetFirstLocalPlayerController(GetWorld())
+            ->GetPawn()
+            ->SetActorLocation(GetActorLocation() + GetActorForwardVector() * 100.f);
 }
 
 void ALevelPortal::Tick(float DeltaTime)
