@@ -3,12 +3,14 @@
 #include "CoreMinimal.h"
 #include "PowersEnum.h"
 #include "GameFramework/Character.h"
+#include "Particles/ParticleSystemComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/ArrowComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Materials/Material.h"
+#include "HookComponent.h"
 #include "PowerBaseComponent.h"
 #include "PowerActivationComponent.h"
 #include "PowerExplosionComponent.h"
@@ -40,6 +42,10 @@ class SUBJECT16_API ASubject15Character : public ACharacter
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     UMaterial *GunMaterialCpp;
 
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+    UParticleSystemComponent* PistolParticleSystem;
+
+
     // UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     // UPowerPushPullComponent *PowerPushPullCompCpp;
 
@@ -49,8 +55,8 @@ class SUBJECT16_API ASubject15Character : public ACharacter
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     UPowerExplosionComponent *PowerExplosionCompCpp;
 
-    // UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-    // UPowerHookComponent *PowerHookCompCpp;
+     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+     UHookComponent* PowerHookCompCpp;
 
     // UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     // UPowerPhaseComponent *PowerPhaseCompCpp;
@@ -62,10 +68,10 @@ class SUBJECT16_API ASubject15Character : public ACharacter
     void SetPistolColor(const FColor &CurrentColorPower);
 
     UFUNCTION()
-    void GetCameraShot(FVector &Start, FVector &End);
+    bool GetCameraShot(FVector& Start, FVector& End);
 
     UFUNCTION()
-    void GetPistolShot(FVector &Start, FVector &End);
+    bool GetPistolShot(FVector &Start, FVector &End);
 
   protected:
     virtual void BeginPlay() override;

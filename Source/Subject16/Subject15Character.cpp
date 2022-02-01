@@ -23,9 +23,12 @@ ASubject15Character::ASubject15Character()
 
     PistolMuzzleCompCpp = CreateDefaultSubobject<UArrowComponent>(TEXT("PistolMuzzleCompCpp"));
     PistolMuzzleCompCpp->SetupAttachment(PistolCompCpp);
-
+    
     PistolFXPointCompCpp = CreateDefaultSubobject<USceneComponent>(TEXT("PistolFXPointCompCpp"));
     PistolFXPointCompCpp->SetupAttachment(PistolCompCpp);
+
+    PistolParticleSystem = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("ParticleSystem"));
+    PistolParticleSystem->SetupAttachment(RootComponent);
 
     // Powers
     // PowerPushPullCompCpp =
@@ -37,8 +40,7 @@ ASubject15Character::ASubject15Character()
     PowerExplosionCompCpp =
         CreateDefaultSubobject<UPowerExplosionComponent>(TEXT("PowerExplosionCompCpp"));
 
-    // PowerHookCompCpp =
-    // CreateDefaultSubobject<UPowerHookComponent>(TEXT("PowerHookCompCpp"));
+    PowerHookCompCpp = CreateDefaultSubobject<UHookComponent>(TEXT("PowerHookCompCpp"));
 
     // PowerPhaseCompCpp =
     // CreateDefaultSubobject<UPowerPhaseComponent>(TEXT("PowerPhaseCompCpp"));
@@ -181,11 +183,15 @@ void ASubject15Character::ChangePower(EPowers NewPower)
         CurrentPower->DeactivatePower();
 
     // Select new Current
-    switch (NewPower)
-    {
+    switch (NewPower) {
     case EPowers::Activation:
         CurrentPower = PowerActivationCompCpp;
         break;
+
+    case EPowers::Hook:
+        CurrentPower = PowerHookCompCpp;
+        break;
+
     case EPowers::Explosion:
         CurrentPower = PowerExplosionCompCpp;
         break;
@@ -202,7 +208,7 @@ void ASubject15Character::ChangePower(EPowers NewPower)
     CurrentPowerEnum = NewPower;
 }
 
-void ASubject15Character::GetCameraShot(FVector &Start, FVector &End)
+bool ASubject15Character::GetCameraShot(FVector &Start, FVector &End)
 {
     FVector A = CameraCompCpp->GetComponentLocation();
     FVector B = A + CameraCompCpp->GetForwardVector() * 10000.f;
@@ -214,9 +220,9 @@ void ASubject15Character::GetCameraShot(FVector &Start, FVector &End)
     RV_TraceParams.bTraceComplex = true;
     RV_TraceParams.bReturnPhysicalMaterial = true;
 
-    auto result = GetWorld()->LineTraceSingleByChannel(RV_Hit, A, B, ECC_Pawn, RV_TraceParams);
+    auto hit = GetWorld()->LineTraceSingleByChannel(RV_Hit, A, B, ECC_Pawn, RV_TraceParams);
 
-    if (!result)
+    if (!hit)
     {
         Start = A;
         End = B;
@@ -227,16 +233,21 @@ void ASubject15Character::GetCameraShot(FVector &Start, FVector &End)
         End = RV_Hit.ImpactPoint;
     }
 
-    DrawDebugLine(GetWorld(), Start, End, {255, 1, 1, 255}, false, 2.f, 0, 0.2f);
+    Start = A;
+    End = RV_Hit.ImpactPoint;
+
+    DrawDebugLine(GetWorld(), A, RV_Hit.ImpactPoint, {255, 1, 1, 255}, false, 2.f, 0, 1.f);
+    return hit;
 }
 
-void ASubject15Character::GetPistolShot(FVector &Start, FVector &End)
+bool ASubject15Character::GetPistolShot(FVector &Start, FVector &End)
 {
     FVector A, B;
-    GetCameraShot(A, B);
+    auto hit = GetCameraShot(A, B);
 
     Start = PistolMuzzleCompCpp->GetComponentLocation();
     End = B;
 
-    DrawDebugLine(GetWorld(), Start, End, {1, 255, 1, 1}, false, 2.f, 0, 0.2f);
+    DrawDebugLine(GetWorld(), Start, End, {1, 255, 1, 1}, false, 2.f, 0, 1.f);
+    return hit;
 }
