@@ -235,10 +235,7 @@ bool ASubject15Character::GetCameraShot(FVector &Start, FVector &End, FHitResult
         HitResult = RV_Hit;
     }
 
-    Start = A;
-    End = RV_Hit.ImpactPoint;
-
-    DrawDebugLine(GetWorld(), A, RV_Hit.ImpactPoint, {255, 1, 1, 255}, false, 2.f, 0, 1.f);
+    DrawDebugLine(GetWorld(), Start, End, {255, 1, 1, 255}, false, 2.f, 0, 1.f);
     return hit;
 }
 
