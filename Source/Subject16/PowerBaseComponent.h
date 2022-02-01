@@ -3,7 +3,7 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "EnumFireMode.h"
-#include "ProjectileClass.h"
+#include "ProjectileBase.h"
 #include "PowerBaseComponent.generated.h"
 
 class ASubject15Character;
@@ -42,7 +42,7 @@ class SUBJECT16_API UPowerBaseComponent : public UActorComponent
     float FireRate = 1.f;
 
     UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
-    TSubclassOf<AProjectileClass> ProjectilePowerType;
+    TSubclassOf<AProjectileBase> ProjectilePowerType;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     FColor PowerColor;
@@ -50,11 +50,7 @@ class SUBJECT16_API UPowerBaseComponent : public UActorComponent
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     AActor *PowerVFX;
 
-  private:
     FTimerHandle *FireTimerHandle = new FTimerHandle();
 
     ASubject15Character *Character;
-
-    FTransform FirePointTransform;
-    FRotator CameraPitchRotator;
 };

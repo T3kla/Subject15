@@ -37,8 +37,8 @@ ASubject15Character::ASubject15Character()
     PowerActivationCompCpp =
         CreateDefaultSubobject<UPowerActivationComponent>(TEXT("PowerActivationCompCpp"));
 
-    // PowerExplosionCompCpp =
-    // CreateDefaultSubobject<UPowerExplosionComponent>(TEXT("PowerExplosionCompCpp"));
+    PowerExplosionCompCpp =
+        CreateDefaultSubobject<UPowerExplosionComponent>(TEXT("PowerExplosionCompCpp"));
 
     PowerHookCompCpp = CreateDefaultSubobject<UHookComponent>(TEXT("PowerHookCompCpp"));
 
@@ -192,6 +192,9 @@ void ASubject15Character::ChangePower(EPowers NewPower)
         CurrentPower = PowerHookCompCpp;
         break;
 
+    case EPowers::Explosion:
+        CurrentPower = PowerExplosionCompCpp;
+        break;
     default:
         CurrentPower = nullptr;
         SetPistolColor({1, 1, 1, 1});

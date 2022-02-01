@@ -13,6 +13,7 @@
 #include "HookComponent.h"
 #include "PowerBaseComponent.h"
 #include "PowerActivationComponent.h"
+#include "PowerExplosionComponent.h"
 #include "Subject15Character.generated.h"
 
 UCLASS()
@@ -51,8 +52,8 @@ class SUBJECT16_API ASubject15Character : public ACharacter
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     UPowerActivationComponent *PowerActivationCompCpp;
 
-    // UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-    // UPowerExplosionComponent *PowerExplosionCompCpp;
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+    UPowerExplosionComponent *PowerExplosionCompCpp;
 
      UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
      UHookComponent* PowerHookCompCpp;
