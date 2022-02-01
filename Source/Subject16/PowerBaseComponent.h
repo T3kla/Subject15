@@ -33,7 +33,8 @@ class SUBJECT16_API UPowerBaseComponent : public UActorComponent
 
   protected:
     virtual void BeginPlay() override;
-    virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+    virtual void TickComponent(float DeltaTime, enum ELevelTick TickType,
+                               FActorComponentTickFunction *ThisTickFunction) override;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     EFireMode FireMode = EFireMode::None;
@@ -50,7 +51,12 @@ class SUBJECT16_API UPowerBaseComponent : public UActorComponent
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     AActor *PowerVFX;
 
-    FTimerHandle *FireTimerHandle = new FTimerHandle();
+    void SetCooldown(float Modifier = 0.f);
+    void ResetCooldown();
+
+    FTimerHandle AutomaticTimer;
+    FTimerHandle CooldownTimer;
+    bool IsInCooldown = false;
 
     ASubject15Character *Character;
 };
