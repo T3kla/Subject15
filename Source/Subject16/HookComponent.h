@@ -47,6 +47,9 @@ public:
 		UPROPERTY()
 				UArrowComponent* uArrowComponent;
 
+		UPROPERTY(EditAnywhere, BlueprintReadWrite)
+				UParticleSystem* TemplateParticle;
+
 private:
 		bool m_canGrappleHook;
 		FVector m_hookLocation;
