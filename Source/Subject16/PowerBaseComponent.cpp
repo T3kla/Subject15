@@ -13,16 +13,36 @@ void UPowerBaseComponent::BeginPlay()
     Super::BeginPlay();
 }
 
+<<<<<<< Updated upstream
+void UPowerBaseComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+=======
 void UPowerBaseComponent::TickComponent(float DeltaTime, ELevelTick TickType,
-                                        FActorComponentTickFunction *ThisTickFunction)
+FActorComponentTickFunction *ThisTickFunction)
+>>>>>>> Stashed changes
 {
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
 void UPowerBaseComponent::FirePressed()
 {
-    switch (FireMode)
+<<<<<<< Updated upstream
+    if (FireMode == EFireMode::Automatic)
     {
+        GetWorld()->GetTimerManager().SetTimer(
+            *FireTimerHandle, this, &UPowerBaseComponent::ExecutePower, 1 / FireRate, true, 0);
+    }
+    else if (FireMode == EFireMode::Semiautomatic)
+    {
+        ExecutePower();
+    }
+    else if (FireMode == EFireMode::Laser)
+    {
+        ExecutePower();
+    }
+    else
+    {
+=======
+    switch (FireMode) {
     case EFireMode::Automatic:
         if (!IsInCooldown)
         {
@@ -46,16 +66,15 @@ void UPowerBaseComponent::FirePressed()
         }
         break;
     default:
+>>>>>>> Stashed changes
         if (GEngine)
             GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Red, "INVALID FireMode Selected!");
-        break;
     }
 }
 
 void UPowerBaseComponent::FireReleased()
 {
-    if (FireMode == EFireMode::Automatic)
-        GetWorld()->GetTimerManager().ClearTimer(AutomaticTimer);
+    GetWorld()->GetTimerManager().ClearTimer(*FireTimerHandle);
 }
 
 void UPowerBaseComponent::ActivatePower()
@@ -65,22 +84,29 @@ void UPowerBaseComponent::ActivatePower()
 
 void UPowerBaseComponent::DeactivatePower()
 {
+<<<<<<< Updated upstream
+    GetWorld()->GetTimerManager().ClearTimer(*FireTimerHandle);
+=======
+
+>>>>>>> Stashed changes
 }
 
 void UPowerBaseComponent::ExecutePower()
 {
-    if (FireMode == EFireMode::Automatic)
-        SetCooldown(-0.001f);
-}
+    // FVector a, b;
+    // Character->GetPistolShot(a, b);
 
-void UPowerBaseComponent::SetCooldown(float Modifier)
-{
-    IsInCooldown = true;
-    GetWorld()->GetTimerManager().SetTimer(CooldownTimer, this, &UPowerBaseComponent::ResetCooldown,
-                                           FireRate + Modifier, false);
-}
+    // // SetUp the FirePoint and the Direction
+    // FirePointTransform = Character->ArrowCompCpp->GetComponentTransform();
 
-void UPowerBaseComponent::ResetCooldown()
-{
-    IsInCooldown = false;
+    // CameraPitchRotator =
+    //     Cast<ASubject15Character>(GetOwner())->ArrowCompCpp->GetForwardVector().Rotation();
+
+    // GetWorld()->SpawnActor<AProjectileClass>(ProjectilePowerType,
+    // FirePointTransform.GetLocation(), CameraPitchRotator);
+
+    // if (GEngine)
+    // {
+    //     GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Black, TEXT("LLEGO Fire Power!\n"));
+    // }
 }
