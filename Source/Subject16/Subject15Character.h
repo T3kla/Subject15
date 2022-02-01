@@ -97,8 +97,8 @@ class SUBJECT16_API ASubject15Character : public ACharacter
     UMaterialInstanceDynamic *PistolDynMaterial;
 
     // Power Change variables
-    EPowers SlotOnePower = EPowers::None;
-    EPowers SlotTwoPower = EPowers::None;
+    EPowers Slots[2];
+
     EPowers CurrentPowerEnum = EPowers::None;
     uint8 CurrentSlot = 1;
     UPowerBaseComponent *CurrentPower = nullptr;

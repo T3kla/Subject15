@@ -44,6 +44,11 @@ ASubject15Character::ASubject15Character()
 
     // PowerPhaseCompCpp =
     // CreateDefaultSubobject<UPowerPhaseComponent>(TEXT("PowerPhaseCompCpp"));
+
+    for (auto &i : Slots)
+    {
+        i = EPowers::None;
+    }
 }
 
 void ASubject15Character::BeginPlay()
@@ -134,13 +139,13 @@ void ASubject15Character::JumpStop()
 void ASubject15Character::SlotOne()
 {
     CurrentSlot = 1;
-    ChangePower(SlotOnePower);
+    ChangePower(Slots[0]);
 }
 
 void ASubject15Character::SlotTwo()
 {
     CurrentSlot = 2;
-    ChangePower(SlotTwoPower);
+    ChangePower(Slots[1]);
 }
 
 void ASubject15Character::FirePressed()
@@ -159,10 +164,28 @@ void ASubject15Character::FireReleased()
 
 void ASubject15Character::SetSlot(EPowers NewPower)
 {
-    if (CurrentSlot == 1)
-        SlotOnePower = NewPower;
-    else if (CurrentSlot == 2)
-        SlotTwoPower = NewPower;
+    for (auto& i : Slots)
+    {
+        if (i == NewPower)
+            return;
+
+        else if (i == EPowers::None)
+        {
+            i = NewPower;
+            ChangePower(i);
+            return;
+        }
+    }
+
+    switch (CurrentSlot) {
+        case 1:
+            Slots[0] = NewPower;
+            break;
+
+        case 2:
+            Slots[1] = NewPower;
+            break;
+    }
 
     ChangePower(NewPower);
 }

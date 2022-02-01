@@ -73,6 +73,12 @@ void UHookComponent::ExecutePower()
 				ResetGrappleHook();
 }
 
+void UHookComponent::ActivatePower() 
+{
+		Character->PistolParticleSystem->SetTemplate(TemplateParticle);
+		Character->SetPistolColor(PowerColor);
+}
+
 void UHookComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 		Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
