@@ -1,47 +1,53 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
 #pragma once
 
+#include "Components/ArrowComponent.h"
+#include "Particles/ParticleSystemComponent.h"
 #include "CoreMinimal.h"
 #include "PowerBaseComponent.h"
 #include "HookComponent.generated.h"
 
-class UParticleSystemComponent;
-class UArrowComponent;
-
 UCLASS()
 class SUBJECT16_API UHookComponent : public UPowerBaseComponent
 {
-    GENERATED_BODY()
+	GENERATED_BODY()
 
-  public:
-    UHookComponent();
+	/*Constructor*/
+public:
+	UHookComponent();
 
-    UFUNCTION()
-    void ShootGrappleHook();
+	UFUNCTION()
+			void ShootGrappleHook();
 
-    UFUNCTION()
-    void ResetGrappleHook();
+	UFUNCTION()
+			void ResetGrappleHook();
 
-    UFUNCTION()
-    void LaunchTowardsHook();
+	UFUNCTION()
+			void LaunchCharacter(FVector& Velocity, bool Override);
 
-    UFUNCTION()
-    void ShowHook();
+	UFUNCTION()
+			void LaunchCharacterForce();
 
-    virtual void TickComponent(float DeltaTime, enum ELevelTick TickType,
-                               FActorComponentTickFunction *ThisTickFunction) override;
+	UFUNCTION()
+			void ShowHook();
 
-    virtual void ExecutePower() override;
+protected:
+		// Called when the game starts or when spawned
+		virtual void BeginPlay() override;
 
-    UPROPERTY()
-    UParticleSystemComponent *uParticleSystem;
+public:
+		virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+		virtual void ExecutePower() override;
 
-    UPROPERTY()
-    UArrowComponent *uArrowComponent;
+		UPROPERTY()
+				UParticleSystemComponent* uParticleSystem;
 
-  protected:
-    virtual void BeginPlay() override;
+		UPROPERTY()
+				UArrowComponent* uArrowComponent;
 
-  private:
-    bool CanGrapple;
-    FVector HookLocation;
+private:
+		bool m_canGrappleHook;
+		FVector m_hookLocation;
+	
 };
