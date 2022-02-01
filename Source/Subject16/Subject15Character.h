@@ -43,8 +43,7 @@ class SUBJECT16_API ASubject15Character : public ACharacter
     UMaterial *GunMaterialCpp;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-    UParticleSystemComponent* PistolParticleSystem;
-
+    UParticleSystemComponent *PistolParticleSystem;
 
     // UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     // UPowerPushPullComponent *PowerPushPullCompCpp;
@@ -55,8 +54,8 @@ class SUBJECT16_API ASubject15Character : public ACharacter
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     UPowerExplosionComponent *PowerExplosionCompCpp;
 
-     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-     UHookComponent* PowerHookCompCpp;
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+    UHookComponent *PowerHookCompCpp;
 
     // UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     // UPowerPhaseComponent *PowerPhaseCompCpp;
@@ -68,10 +67,10 @@ class SUBJECT16_API ASubject15Character : public ACharacter
     void SetPistolColor(const FColor &CurrentColorPower);
 
     UFUNCTION()
-    bool GetCameraShot(FVector& Start, FVector& End);
+    bool GetCameraShot(FVector &Start, FVector &End, FHitResult &HitResult);
 
     UFUNCTION()
-    bool GetPistolShot(FVector &Start, FVector &End);
+    bool GetPistolShot(FVector &Start, FVector &End, FHitResult &HitResult);
 
   protected:
     virtual void BeginPlay() override;

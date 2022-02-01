@@ -28,6 +28,10 @@ void ALevelPortal::BeginPlay()
     // Get Player Cam
     if (AllowTravel && GEngine)
         PlayerCam = GEngine->GetFirstLocalPlayerController(GetWorld())->PlayerCameraManager;
+    else
+        GEngine->GetFirstLocalPlayerController(GetWorld())
+            ->GetPawn()
+            ->SetActorLocation(GetActorLocation() + GetActorForwardVector() * 100.f);
 }
 
 void ALevelPortal::Tick(float DeltaTime)
@@ -61,6 +65,15 @@ void ALevelPortal::OnOverlap(UPrimitiveComponent *OverlappedComp, AActor *Other,
         if (GEngine)
             GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Yellow,
                                              "Portal: Allow Travel is false!");
+
+        return;
+    }
+
+    if (Other->ActorHasTag("Player"))
+    {
+        if (GEngine)
+            GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Yellow,
+                                             "Portal: Actor wasn't player!");
 
         return;
     }

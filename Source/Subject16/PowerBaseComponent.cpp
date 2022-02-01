@@ -23,7 +23,7 @@ void UPowerBaseComponent::FirePressed()
     if (FireMode == EFireMode::Automatic)
     {
         GetWorld()->GetTimerManager().SetTimer(
-            *FireTimerHandle, this, &UPowerBaseComponent::ExecutePower, 1 / FireRate, true, 0);
+            FireTimerHandle, this, &UPowerBaseComponent::ExecutePower, 1 / FireRate, true, 0);
     }
     else if (FireMode == EFireMode::Semiautomatic)
     {
@@ -42,7 +42,7 @@ void UPowerBaseComponent::FirePressed()
 
 void UPowerBaseComponent::FireReleased()
 {
-    GetWorld()->GetTimerManager().ClearTimer(*FireTimerHandle);
+    GetWorld()->GetTimerManager().ClearTimer(FireTimerHandle);
 }
 
 void UPowerBaseComponent::ActivatePower()
@@ -52,25 +52,9 @@ void UPowerBaseComponent::ActivatePower()
 
 void UPowerBaseComponent::DeactivatePower()
 {
-    GetWorld()->GetTimerManager().ClearTimer(*FireTimerHandle);
+    GetWorld()->GetTimerManager().ClearTimer(FireTimerHandle);
 }
 
 void UPowerBaseComponent::ExecutePower()
 {
-    // FVector a, b;
-    // Character->GetPistolShot(a, b);
-
-    // // SetUp the FirePoint and the Direction
-    // FirePointTransform = Character->ArrowCompCpp->GetComponentTransform();
-
-    // CameraPitchRotator =
-    //     Cast<ASubject15Character>(GetOwner())->ArrowCompCpp->GetForwardVector().Rotation();
-
-    // GetWorld()->SpawnActor<AProjectileClass>(ProjectilePowerType,
-    // FirePointTransform.GetLocation(), CameraPitchRotator);
-
-    // if (GEngine)
-    // {
-    //     GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Black, TEXT("LLEGO Fire Power!\n"));
-    // }
 }
