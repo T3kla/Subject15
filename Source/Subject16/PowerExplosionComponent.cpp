@@ -39,11 +39,10 @@ void UPowerExplosionComponent::ExecutePower()
 	Super::ExecutePower();
 
 	FVector A, B;
-	Character->GetPistolShot(A, B);
+	FHitResult Res;
+	Character->GetPistolShot(A, B, Res);
 
-	auto projectile =
-		GetWorld()->SpawnActor<AProjectileBase>(this->ProjectilePowerType, A, (B - A).Rotation());
-	
+	GetWorld()->SpawnActor<AProjectileBase>(this->ProjectilePowerType, A, (B - A).Rotation());
 
 
 }
