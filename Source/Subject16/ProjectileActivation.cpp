@@ -28,7 +28,7 @@ void AProjectileActivation::Tick(float DeltaTime)
 void AProjectileActivation::DestroyProjectile()
 {
     // Spawn Explosion
-    FTransform Transform(GetActorRotation(), GetActorLocation(), {.6f, .6f, .6f});
+    FTransform Transform(GetActorRotation(), GetActorLocation(), ExplosionScale);
     UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Explosion, Transform, true,
                                              EPSCPoolMethod::AutoRelease, true);
 
@@ -40,5 +40,11 @@ void AProjectileActivation::OnOverlap(UPrimitiveComponent *OverlappedComp, AActo
                                       UPrimitiveComponent *OtherComp, int32 OtherBodyIndex,
                                       bool bFromSweep, const FHitResult &SweepResult)
 {
+    if (Other->ActorHasTag("Activatable"))
+    {
+        if (GEngine)
+            GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Purple, "Activatable!");
+    }
+
     DestroyProjectile();
 }
