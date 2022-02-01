@@ -1,5 +1,10 @@
 #pragma once
 
+#include "PowerBaseComponent.h"
+#include "PowerHookComponent.h"
+#include "PowerActivationComponent.h"
+#include "PowerExplosionComponent.h"
+
 #include "CoreMinimal.h"
 #include "PowersEnum.h"
 #include "GameFramework/Character.h"
@@ -10,10 +15,6 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Materials/Material.h"
-#include "PowerHookComponent.h"
-#include "PowerBaseComponent.h"
-#include "PowerActivationComponent.h"
-#include "PowerExplosionComponent.h"
 #include "Subject15Character.generated.h"
 
 UCLASS()

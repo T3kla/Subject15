@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Components/ArrowComponent.h"
+#include "Particles/ParticleSystemComponent.h"
 #include "CoreMinimal.h"
 #include "PowerBaseComponent.h"
 #include "PowerHookComponent.generated.h"
@@ -13,41 +14,28 @@ class SUBJECT16_API UPowerHookComponent : public UPowerBaseComponent
   public:
     UPowerHookComponent();
 
-    UFUNCTION()
-    void ShootGrappleHook();
-
-    UFUNCTION()
-    void ResetGrappleHook();
-
-    UFUNCTION()
-    void LaunchCharacter(FVector &Velocity, bool Override);
-
-    UFUNCTION()
-    void LaunchCharacterForce();
-
-    UFUNCTION()
-    void ShowHook();
-
-    UPROPERTY()
-    UParticleSystemComponent *uParticleSystem;
-
-    UPROPERTY()
-    UArrowComponent *uArrowComponent;
-
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UParticleSystem *TemplateParticle;
 
     virtual void TickComponent(float DeltaTime, enum ELevelTick TickType,
                                FActorComponentTickFunction *ThisTickFunction) override;
 
+    virtual void ActivatePower() override;
     virtual void ExecutePower() override;
 
-    virtual void ActivatePower() override;
+    void ShootGrappleHook();
+    void ResetGrappleHook();
+    void LaunchCharacter(FVector &Velocity, bool Override);
+    void LaunchCharacterForce();
+    void ShowHook();
 
   protected:
     virtual void BeginPlay() override;
 
   private:
+    UParticleSystemComponent *ParticleSystem;
+    UArrowComponent *PistolMuzzle;
+
     bool CanGrapple;
     FVector HookLocation;
 };

@@ -13,8 +13,8 @@ void UPowerHookComponent::BeginPlay()
 {
     Super::BeginPlay();
 
-    uParticleSystem = Character->PistolParticleSystem;
-    uArrowComponent = Character->PistolMuzzleCompCpp;
+    ParticleSystem = Character->PistolParticleSystem;
+    PistolMuzzle = Character->PistolMuzzleCompCpp;
     ResetGrappleHook();
 }
 
@@ -23,21 +23,21 @@ void UPowerHookComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 {
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-    if (uParticleSystem->IsVisible())
+    if (ParticleSystem->IsVisible())
         ShowHook();
 }
 
 void UPowerHookComponent::ShootGrappleHook()
 {
-    uParticleSystem->SetVisibility(true);
+    ParticleSystem->SetVisibility(true);
 
-    uParticleSystem->SetBeamSourcePoint(0, uArrowComponent->GetComponentLocation(), 0);
-    uParticleSystem->SetBeamTargetPoint(0, HookLocation, 0);
+    ParticleSystem->SetBeamSourcePoint(0, PistolMuzzle->GetComponentLocation(), 0);
+    ParticleSystem->SetBeamTargetPoint(0, HookLocation, 0);
 }
 
 void UPowerHookComponent::ResetGrappleHook()
 {
-    uParticleSystem->SetVisibility(false);
+    ParticleSystem->SetVisibility(false);
     CanGrapple = true;
 }
 
@@ -54,10 +54,10 @@ void UPowerHookComponent::LaunchCharacterForce()
 
 void UPowerHookComponent::ShowHook()
 {
-    if (uParticleSystem && uArrowComponent)
+    if (ParticleSystem && PistolMuzzle)
     {
-        uParticleSystem->SetBeamSourcePoint(0, uArrowComponent->GetComponentLocation(), 0);
-        uParticleSystem->SetBeamTargetPoint(0, HookLocation, 0);
+        ParticleSystem->SetBeamSourcePoint(0, PistolMuzzle->GetComponentLocation(), 0);
+        ParticleSystem->SetBeamTargetPoint(0, HookLocation, 0);
     }
 }
 
