@@ -3,7 +3,7 @@
 #pragma once
 
 #include "Components/ArrowComponent.h"
-#include "Particles/ParticleSystem.h"
+#include "Particles/ParticleSystemComponent.h"
 #include "CoreMinimal.h"
 #include "PowerBaseComponent.h"
 #include "HookComponent.generated.h"
@@ -14,12 +14,23 @@ class SUBJECT16_API UHookComponent : public UPowerBaseComponent
 	GENERATED_BODY()
 
 	/*Constructor*/
+public:
 	UHookComponent();
 
-private:
-		float m_maxDistance;
-		bool m_canGrappleHook;
-		FVector m_hookLocation;
+	UFUNCTION()
+			void ShootGrappleHook();
+
+	UFUNCTION()
+			void ResetGrappleHook();
+
+	UFUNCTION()
+			void LaunchCharacter(FVector& Velocity, bool Override);
+
+	UFUNCTION()
+			void LaunchCharacterForce();
+
+	UFUNCTION()
+			void ShowHook();
 
 protected:
 		// Called when the game starts or when spawned
@@ -27,11 +38,16 @@ protected:
 
 public:
 		virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+		virtual void ExecutePower() override;
 
 		UPROPERTY()
-				UParticleSystem* uParticleSystem;
+				UParticleSystemComponent* uParticleSystem;
 
 		UPROPERTY()
 				UArrowComponent* uArrowComponent;
+
+private:
+		bool m_canGrappleHook;
+		FVector m_hookLocation;
 	
 };
