@@ -13,49 +13,36 @@ void UPowerBaseComponent::BeginPlay()
     Super::BeginPlay();
 }
 
-void UPowerBaseComponent::TickComponent(float DeltaTime, ELevelTick TickType,
-                                        FActorComponentTickFunction *ThisTickFunction)
+void UPowerBaseComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
 void UPowerBaseComponent::FirePressed()
 {
-    switch (FireMode)
+    if (FireMode == EFireMode::Automatic)
     {
-    case EFireMode::Automatic:
-        if (!IsInCooldown)
-        {
-            GetWorld()->GetTimerManager().SetTimer(
-                AutomaticTimer, this, &UPowerBaseComponent::ExecutePower, FireRate, true, 0.f);
-            SetCooldown();
-        }
-        break;
-    case EFireMode::Semiautomatic:
-        if (!IsInCooldown)
-        {
-            ExecutePower();
-            SetCooldown();
-        }
-        break;
-    case EFireMode::Laser:
-        if (!IsInCooldown)
-        {
-            ExecutePower();
-            SetCooldown();
-        }
-        break;
-    default:
+        GetWorld()->GetTimerManager().SetTimer(
+            *FireTimerHandle, this, &UPowerBaseComponent::ExecutePower, 1 / FireRate, true, 0);
+    }
+    else if (FireMode == EFireMode::Semiautomatic)
+    {
+        ExecutePower();
+    }
+    else if (FireMode == EFireMode::Laser)
+    {
+        ExecutePower();
+    }
+    else
+    {
         if (GEngine)
             GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Red, "INVALID FireMode Selected!");
-        break;
     }
 }
 
 void UPowerBaseComponent::FireReleased()
 {
-    if (FireMode == EFireMode::Automatic)
-        GetWorld()->GetTimerManager().ClearTimer(AutomaticTimer);
+    GetWorld()->GetTimerManager().ClearTimer(*FireTimerHandle);
 }
 
 void UPowerBaseComponent::ActivatePower()
@@ -65,22 +52,9 @@ void UPowerBaseComponent::ActivatePower()
 
 void UPowerBaseComponent::DeactivatePower()
 {
+    GetWorld()->GetTimerManager().ClearTimer(*FireTimerHandle);
 }
 
 void UPowerBaseComponent::ExecutePower()
 {
-    if (FireMode == EFireMode::Automatic)
-        SetCooldown(-0.001f);
-}
-
-void UPowerBaseComponent::SetCooldown(float Modifier)
-{
-    IsInCooldown = true;
-    GetWorld()->GetTimerManager().SetTimer(CooldownTimer, this, &UPowerBaseComponent::ResetCooldown,
-                                           FireRate + Modifier, false);
-}
-
-void UPowerBaseComponent::ResetCooldown()
-{
-    IsInCooldown = false;
 }

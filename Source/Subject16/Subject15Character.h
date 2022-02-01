@@ -1,5 +1,10 @@
 #pragma once
 
+#include "PowerBaseComponent.h"
+#include "PowerHookComponent.h"
+#include "PowerActivationComponent.h"
+#include "PowerExplosionComponent.h"
+
 #include "CoreMinimal.h"
 #include "PowersEnum.h"
 #include "GameFramework/Character.h"
@@ -10,10 +15,6 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Materials/Material.h"
-#include "HookComponent.h"
-#include "PowerBaseComponent.h"
-#include "PowerActivationComponent.h"
-#include "PowerExplosionComponent.h"
 #include "Subject15Character.generated.h"
 
 UCLASS()
@@ -55,7 +56,7 @@ class SUBJECT16_API ASubject15Character : public ACharacter
     UPowerExplosionComponent *PowerExplosionCompCpp;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-    UHookComponent *PowerHookCompCpp;
+    UPowerHookComponent *PowerHookCompCpp;
 
     // UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     // UPowerPhaseComponent *PowerPhaseCompCpp;
@@ -97,8 +98,8 @@ class SUBJECT16_API ASubject15Character : public ACharacter
     UMaterialInstanceDynamic *PistolDynMaterial;
 
     // Power Change variables
-    EPowers SlotOnePower = EPowers::None;
-    EPowers SlotTwoPower = EPowers::None;
+    EPowers Slots[2];
+
     EPowers CurrentPowerEnum = EPowers::None;
     uint8 CurrentSlot = 1;
     UPowerBaseComponent *CurrentPower = nullptr;
