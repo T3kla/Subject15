@@ -14,6 +14,9 @@ class SUBJECT16_API AProjectileActivation : public AProjectileBase
 
     virtual void Tick(float DeltaTime) override;
 
+    UPROPERTY()
+    float Lifetime = 2.f;
+
   protected:
     virtual void BeginPlay() override;
 
@@ -22,4 +25,7 @@ class SUBJECT16_API AProjectileActivation : public AProjectileBase
     void OnOverlap(UPrimitiveComponent *OverlappedComp, AActor *Other,
                    UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep,
                    const FHitResult &SweepResult);
+
+     void Destroy();
+
 };
