@@ -40,7 +40,7 @@ ASubject15Character::ASubject15Character()
     PowerExplosionCompCpp =
         CreateDefaultSubobject<UPowerExplosionComponent>(TEXT("PowerExplosionCompCpp"));
 
-    PowerHookCompCpp = CreateDefaultSubobject<UHookComponent>(TEXT("PowerHookCompCpp"));
+    PowerHookCompCpp = CreateDefaultSubobject<UPowerHookComponent>(TEXT("PowerHookCompCpp"));
 
     // PowerPhaseCompCpp =
     // CreateDefaultSubobject<UPowerPhaseComponent>(TEXT("PowerPhaseCompCpp"));
@@ -164,7 +164,7 @@ void ASubject15Character::FireReleased()
 
 void ASubject15Character::SetSlot(EPowers NewPower)
 {
-    for (auto& i : Slots)
+    for (auto &i : Slots)
     {
         if (i == NewPower)
             return;
@@ -177,14 +177,15 @@ void ASubject15Character::SetSlot(EPowers NewPower)
         }
     }
 
-    switch (CurrentSlot) {
-        case 1:
-            Slots[0] = NewPower;
-            break;
+    switch (CurrentSlot)
+    {
+    case 1:
+        Slots[0] = NewPower;
+        break;
 
-        case 2:
-            Slots[1] = NewPower;
-            break;
+    case 2:
+        Slots[1] = NewPower;
+        break;
     }
 
     ChangePower(NewPower);

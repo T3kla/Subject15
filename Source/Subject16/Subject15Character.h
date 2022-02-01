@@ -55,7 +55,7 @@ class SUBJECT16_API ASubject15Character : public ACharacter
     UPowerExplosionComponent *PowerExplosionCompCpp;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-    UHookComponent *PowerHookCompCpp;
+    UPowerHookComponent *PowerHookCompCpp;
 
     // UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     // UPowerPhaseComponent *PowerPhaseCompCpp;
@@ -67,10 +67,10 @@ class SUBJECT16_API ASubject15Character : public ACharacter
     void SetPistolColor(const FColor &CurrentColorPower);
 
     UFUNCTION()
-    bool GetCameraShot(FVector &Start, FVector &End, FHitResult &HitResult);
+    bool GetCameraShot(FVector &Start, FVector &End);
 
     UFUNCTION()
-    bool GetPistolShot(FVector &Start, FVector &End, FHitResult &HitResult);
+    bool GetPistolShot(FVector &Start, FVector &End);
 
   protected:
     virtual void BeginPlay() override;
