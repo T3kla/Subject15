@@ -222,6 +222,17 @@ bool ASubject15Character::GetCameraShot(FVector &Start, FVector &End)
 
     auto hit = GetWorld()->LineTraceSingleByChannel(RV_Hit, A, B, ECC_Pawn, RV_TraceParams);
 
+    if (!hit)
+    {
+        Start = A;
+        End = B;
+    }
+    else
+    {
+        Start = A;
+        End = RV_Hit.ImpactPoint;
+    }
+
     Start = A;
     End = RV_Hit.ImpactPoint;
 
