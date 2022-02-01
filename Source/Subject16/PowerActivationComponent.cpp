@@ -39,8 +39,5 @@ void UPowerActivationComponent::ExecutePower()
     FHitResult Res;
     Character->GetPistolShot(A, B, Res);
 
-    auto projectile =
-        GetWorld()->SpawnActor<AProjectileBase>(this->ProjectilePowerType, A, (B - A).Rotation());
-
-    // projectile->GetProjectileMovementComponent()->Velocity = FVector::mag
+    GetWorld()->SpawnActor<AProjectileBase>(this->ProjectilePowerType, A, (B - A).Rotation());
 }
