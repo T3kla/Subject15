@@ -10,7 +10,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Materials/Material.h"
-#include "HookComponent.h"
+#include "PowerHookComponent.h"
 #include "PowerBaseComponent.h"
 #include "PowerActivationComponent.h"
 #include "PowerExplosionComponent.h"
@@ -67,10 +67,10 @@ class SUBJECT16_API ASubject15Character : public ACharacter
     void SetPistolColor(const FColor &CurrentColorPower);
 
     UFUNCTION()
-    bool GetCameraShot(FVector &Start, FVector &End);
+    bool GetCameraShot(FVector &Start, FVector &End, FHitResult &HitResult);
 
     UFUNCTION()
-    bool GetPistolShot(FVector &Start, FVector &End);
+    bool GetPistolShot(FVector &Start, FVector &End, FHitResult &HitResult);
 
   protected:
     virtual void BeginPlay() override;

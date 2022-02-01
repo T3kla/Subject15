@@ -1,13 +1,30 @@
 #include "PowerHookComponent.h"
-#include "Components/ArrowComponent.h"
-#include "Particles/ParticleSystemComponent.h"
 #include "Subject15Character.h"
-#include "Kismet/GameplayStatics.h"
 
 UPowerHookComponent::UPowerHookComponent()
 {
+    PrimaryComponentTick.bCanEverTick = true;
+
     CanGrapple = true;
-    HookLocation = FVector(0, 0, 0);
+    HookLocation = {0.f, 0.f, 0.f};
+}
+
+void UPowerHookComponent::BeginPlay()
+{
+    Super::BeginPlay();
+
+    uParticleSystem = Character->PistolParticleSystem;
+    uArrowComponent = Character->PistolMuzzleCompCpp;
+    ResetGrappleHook();
+}
+
+void UPowerHookComponent::TickComponent(float DeltaTime, ELevelTick TickType,
+                                        FActorComponentTickFunction *ThisTickFunction)
+{
+    Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+    if (uParticleSystem->IsVisible())
+        ShowHook();
 }
 
 void UPowerHookComponent::ShootGrappleHook()
@@ -44,22 +61,13 @@ void UPowerHookComponent::ShowHook()
     }
 }
 
-void UPowerHookComponent::BeginPlay()
-{
-    Super::BeginPlay();
-
-    /*Init pointers*/
-    uParticleSystem = Character->PistolParticleSystem;
-    uArrowComponent = Character->PistolMuzzleCompCpp;
-    ResetGrappleHook();
-}
-
 void UPowerHookComponent::ExecutePower()
 {
     FVector A, B, InitForce(0, 0, 500);
+    FHitResult Res;
     FTimerHandle TimerHandleInit, TimerHandleForce;
 
-    if (Character->GetCameraShot(A, B))
+    if (Character->GetCameraShot(A, B, Res))
     {
         HookLocation = B;
         ShootGrappleHook();
@@ -78,13 +86,4 @@ void UPowerHookComponent::ActivatePower()
 {
     Character->PistolParticleSystem->SetTemplate(TemplateParticle);
     Character->SetPistolColor(PowerColor);
-}
-
-void UPowerHookComponent::TickComponent(float DeltaTime, ELevelTick TickType,
-                                        FActorComponentTickFunction *ThisTickFunction)
-{
-    Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-    if (uParticleSystem->IsVisible())
-        ShowHook();
 }

@@ -44,11 +44,6 @@ ASubject15Character::ASubject15Character()
 
     // PowerPhaseCompCpp =
     // CreateDefaultSubobject<UPowerPhaseComponent>(TEXT("PowerPhaseCompCpp"));
-
-    for (auto &i : Slots)
-    {
-        i = EPowers::None;
-    }
 }
 
 void ASubject15Character::BeginPlay()
@@ -67,6 +62,17 @@ void ASubject15Character::BeginPlay()
     InputComponent->BindAction("Fire", IE_Pressed, this, &ASubject15Character::FirePressed);
     InputComponent->BindAction("Fire", IE_Released, this, &ASubject15Character::FireReleased);
 
+    // Clean Slots
+    for (auto &&Power : Slots)
+        Power = EPowers::None;
+
+    // Camera Fade In at level start
+    if (GEngine)
+    {
+        auto *Cam = GEngine->GetFirstLocalPlayerController(GetWorld())->PlayerCameraManager;
+        Cam->StartCameraFade(1.0f, 0.0f, 1.5f, {0.0f, 0.0f, 0.0f, 0.0f}, false, false);
+    }
+
     if (!GunMaterialCpp)
         return;
 
@@ -78,13 +84,6 @@ void ASubject15Character::BeginPlay()
     for (size_t i = 0; i < PistolCompCpp->GetMaterials().Num(); i++)
         if (i > 0) // Skip first because it's the gun's body
             PistolCompCpp->SetMaterial(i, PistolDynMaterial);
-
-    // Camera Fade In at level start
-    if (GEngine)
-    {
-        auto *Cam = GEngine->GetFirstLocalPlayerController(GetWorld())->PlayerCameraManager;
-        Cam->StartCameraFade(1.0f, 0.0f, 1.5f, {0.0f, 0.0f, 0.0f, 0.0f}, false, false);
-    }
 }
 void ASubject15Character::Tick(float DeltaTime)
 {

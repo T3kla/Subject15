@@ -57,20 +57,4 @@ void UPowerBaseComponent::DeactivatePower()
 
 void UPowerBaseComponent::ExecutePower()
 {
-    // FVector a, b;
-    // Character->GetPistolShot(a, b);
-
-    // // SetUp the FirePoint and the Direction
-    // FirePointTransform = Character->ArrowCompCpp->GetComponentTransform();
-
-    // CameraPitchRotator =
-    //     Cast<ASubject15Character>(GetOwner())->ArrowCompCpp->GetForwardVector().Rotation();
-
-    // GetWorld()->SpawnActor<AProjectileClass>(ProjectilePowerType,
-    // FirePointTransform.GetLocation(), CameraPitchRotator);
-
-    // if (GEngine)
-    // {
-    //     GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Black, TEXT("LLEGO Fire Power!\n"));
-    // }
 }
