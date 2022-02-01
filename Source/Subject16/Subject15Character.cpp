@@ -23,7 +23,7 @@ ASubject15Character::ASubject15Character()
 
     PistolMuzzleCompCpp = CreateDefaultSubobject<UArrowComponent>(TEXT("PistolMuzzleCompCpp"));
     PistolMuzzleCompCpp->SetupAttachment(PistolCompCpp);
-    
+
     PistolFXPointCompCpp = CreateDefaultSubobject<USceneComponent>(TEXT("PistolFXPointCompCpp"));
     PistolFXPointCompCpp->SetupAttachment(PistolCompCpp);
 
@@ -183,7 +183,8 @@ void ASubject15Character::ChangePower(EPowers NewPower)
         CurrentPower->DeactivatePower();
 
     // Select new Current
-    switch (NewPower) {
+    switch (NewPower)
+    {
     case EPowers::Activation:
         CurrentPower = PowerActivationCompCpp;
         break;
@@ -208,7 +209,7 @@ void ASubject15Character::ChangePower(EPowers NewPower)
     CurrentPowerEnum = NewPower;
 }
 
-bool ASubject15Character::GetCameraShot(FVector &Start, FVector &End)
+bool ASubject15Character::GetCameraShot(FVector &Start, FVector &End, FHitResult &HitResult)
 {
     FVector A = CameraCompCpp->GetComponentLocation();
     FVector B = A + CameraCompCpp->GetForwardVector() * 10000.f;
@@ -231,6 +232,7 @@ bool ASubject15Character::GetCameraShot(FVector &Start, FVector &End)
     {
         Start = A;
         End = RV_Hit.ImpactPoint;
+        HitResult = RV_Hit;
     }
 
     Start = A;
@@ -240,10 +242,14 @@ bool ASubject15Character::GetCameraShot(FVector &Start, FVector &End)
     return hit;
 }
 
-bool ASubject15Character::GetPistolShot(FVector &Start, FVector &End)
+bool ASubject15Character::GetPistolShot(FVector &Start, FVector &End, FHitResult &HitResult)
 {
     FVector A, B;
-    auto hit = GetCameraShot(A, B);
+    auto hit = GetCameraShot(A, B, HitResult);
+
+    if (GEngine)
+        GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Yellow,
+                                         FString::Printf(TEXT("%d"), HitResult));
 
     Start = PistolMuzzleCompCpp->GetComponentLocation();
     End = B;
