@@ -50,7 +50,7 @@ class SUBJECT16_API UPowerBaseComponent : public UActorComponent
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     AActor *PowerVFX;
 
-    FTimerHandle *FireTimerHandle = new FTimerHandle();
+    FTimerHandle FireTimerHandle;
 
     ASubject15Character *Character;
 };
