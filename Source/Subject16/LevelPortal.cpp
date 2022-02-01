@@ -74,7 +74,7 @@ void ALevelPortal::OnOverlap(UPrimitiveComponent *OverlappedComp, AActor *Other,
         return;
     }
 
-    if (Other->ActorHasTag("Player"))
+    if (!Other->ActorHasTag(TEXT("Player")))
     {
         if (GEngine)
             GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Yellow,
