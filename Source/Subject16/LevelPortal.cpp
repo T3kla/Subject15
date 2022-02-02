@@ -1,11 +1,7 @@
 #include "LevelPortal.h"
 #include "LevelPortalStructureCpp.h"
-#include "GameFramework/Character.h"
-
-#include "GameFramework/Actor.h"
-#include "Materials/MaterialInstance.h"
-#include "Materials/MaterialInstanceDynamic.h"
 #include "Particles/ParticleSystemComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Engine/DataTable.h"
 #include "Components/BoxComponent.h"
 
