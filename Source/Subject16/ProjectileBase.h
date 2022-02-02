@@ -29,8 +29,6 @@ protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
         float Lifetime = 2.f;
 
-
-
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
         USoundBase* ProjectileSoundFX;
 

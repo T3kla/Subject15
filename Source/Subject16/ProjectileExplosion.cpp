@@ -27,13 +27,14 @@ void AProjectileExplosion::Tick(float DeltaTime)
 
 void AProjectileExplosion::DestroyProjectile()
 {
-	
 	// Spawn Explosion
-	FTransform Transform(GetActorRotation(), GetActorLocation(), ParticleSize);
-	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ParticleSys, Transform, true,
-																					 EPSCPoolMethod::AutoRelease, true);
+	// FTransform Transform(GetActorRotation(), GetActorLocation(), ParticleSize);
+	// UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ParticleSys, Transform, true,
+	// 																				 EPSCPoolMethod::AutoRelease, true);
+	
 	// AActor Destroy
-	Super::Destroy();
+	// Super::Destroy();
+	Super::DestroyProjectile();
 }
 
 void AProjectileExplosion::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other,
