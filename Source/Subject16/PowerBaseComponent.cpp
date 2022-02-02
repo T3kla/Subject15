@@ -94,5 +94,12 @@ void UPowerBaseComponent::PlayPowerSound()
 
 		UGameplayStatics::PlaySoundAtLocation(this, PowerSoundFX, SoundLocation /*, float VolumeMultiplier = 1.f, float PitchMultiplier = 1.f, float StartTime = 0.f, class USoundAttenuation* AttenuationSettings = nullptr, USoundConcurrency * ConcurrencySettings = nullptr*/);
 	}
+	else
+	{
+		if (GEngine) {
 
+			GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Yellow,
+				"You MUST include a SoundFX to this Power!");
+		}
+	}
 }
