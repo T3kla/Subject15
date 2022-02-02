@@ -57,7 +57,7 @@ void AProjectileBase::PlayProjectileExplosionSFX()
     if (ProjectileSoundFX)
     {
         FVector SoundLocation = GetActorLocation();
-
+        
         UGameplayStatics::PlaySoundAtLocation(this, ProjectileSoundFX, SoundLocation);
     }
     else {
