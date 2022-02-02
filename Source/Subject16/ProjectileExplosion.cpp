@@ -27,11 +27,11 @@ void AProjectileExplosion::Tick(float DeltaTime)
 
 void AProjectileExplosion::DestroyProjectile()
 {
+	
 	// Spawn Explosion
 	FTransform Transform(GetActorRotation(), GetActorLocation(), ParticleSize);
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ParticleSys, Transform, true,
 																					 EPSCPoolMethod::AutoRelease, true);
-
 	// AActor Destroy
 	Super::Destroy();
 }
@@ -40,14 +40,10 @@ void AProjectileExplosion::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
 	bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (!Other->ActorHasTag("TriggerExplosion"))
-	{
-		DestroyProjectile();
-	}
 	if (Other->ActorHasTag("ExplosionEvent"))
 	{
-		DestroyProjectile();
 		Other->Destroy();
-
 	}
+	
+	DestroyProjectile();
 }
