@@ -10,6 +10,9 @@ class SUBJECT16_API AActivator : public AActor
     GENERATED_BODY()
 
   public:
+    AActivator();
+    virtual void BeginPlay() override;
+
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     USceneComponent *RootCompCpp;
 
@@ -23,16 +26,21 @@ class SUBJECT16_API AActivator : public AActor
     bool IsActive;
 
   protected:
-    AActivator();
-    virtual void BeginPlay() override;
-    virtual void Tick(float DeltaTime) override;
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+    UStaticMeshComponent *PanelEmissiveCompCpp;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-    FColor ColorIfActive = {255, 255, 255};
+    UMaterial *EmissiveMaterial;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-    FColor ColorIfNotActive = {1, 1, 1};
+    float EmissiveWhenActive = 24.f;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+    float EmissiveWhenNotActive = 0.f;
 
     UPROPERTY(EditInstanceOnly)
     TArray<AActivable *> ActivablesArray;
+
+  private:
+    UMaterialInstanceDynamic *EmissiveDynMaterial;
 };

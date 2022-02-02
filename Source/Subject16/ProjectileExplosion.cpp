@@ -11,7 +11,6 @@ void AProjectileExplosion::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// 
 	SphereCompCpp->OnComponentBeginOverlap.AddDynamic(this, &AProjectileExplosion::OnOverlap);
 
 	// LifeTime
@@ -27,14 +26,6 @@ void AProjectileExplosion::Tick(float DeltaTime)
 
 void AProjectileExplosion::DestroyProjectile()
 {
-	// Spawn Explosion
-	// FTransform Transform(GetActorRotation(), GetActorLocation(), ParticleSize);
-	// UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ParticleSys, Transform, true,
-	// 																				 EPSCPoolMethod::AutoRelease, true);
-	
-	// AActor Destroy
-	// Super::Destroy();
-	
 	Super::DestroyProjectile();
 }
 

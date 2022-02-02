@@ -34,11 +34,11 @@ class SUBJECT16_API ASubject15Character : public ACharacter
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     UCameraComponent *CameraCompCpp;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	USceneComponent* GrabLocation;
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+    USceneComponent *GrabLocation;
 
-	UPROPERTY()
-	FVector GrabInitialLocation = FVector(250.0f, 0.0f, 20.0f);
+    UPROPERTY()
+    FVector GrabInitialLocation = FVector(250.0f, 0.0f, 20.0f);
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     UStaticMeshComponent *PistolCompCpp;
@@ -47,22 +47,22 @@ class SUBJECT16_API ASubject15Character : public ACharacter
     UArrowComponent *PistolMuzzleCompCpp;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-    USceneComponent *PistolFXPointCompCpp; // Effects attatch to this
+    USceneComponent *PistolFXPointCompCpp;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-    UAudioComponent* AudioComponentSystem;
+    UAudioComponent *AudioComponentSystem;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     UMaterial *GunMaterialCpp;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     UParticleSystemComponent *PistolParticleSystem;
-    
+
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     UParticleSystemComponent *GrabbingParticleSystem;
 
-	  UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	  UPhysicsHandleComponent* PhysicsHandleCompCpp;
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+    UPhysicsHandleComponent *PhysicsHandleCompCpp;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     UPowerPushPullComponent *PowerPushPullCompCpp;
@@ -75,9 +75,6 @@ class SUBJECT16_API ASubject15Character : public ACharacter
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     UPowerHookComponent *PowerHookCompCpp;
-
-    // UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-    // UPowerPhaseComponent *PowerPhaseCompCpp;
 
     UFUNCTION()
     void SetSlot(EPowers NewPower);

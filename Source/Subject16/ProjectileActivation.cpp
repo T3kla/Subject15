@@ -1,4 +1,6 @@
 #include "ProjectileActivation.h"
+#include "Activator.h"
+#include "PowerActivationComponent.h"
 #include "Particles/ParticleSystem.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -10,14 +12,6 @@ AProjectileActivation::AProjectileActivation()
 void AProjectileActivation::BeginPlay()
 {
     Super::BeginPlay();
-
-    //// Bind to Box Collision
-    //SphereCompCpp->OnComponentBeginOverlap.AddDynamic(this, &AProjectileActivation::OnOverlap);
-
-    //// Lifetime
-    //FTimerHandle LifetimeTimer;
-    //GetWorld()->GetTimerManager().SetTimer(
-    //    LifetimeTimer, this, &AProjectileActivation::DestroyProjectile, Lifetime, false);
 }
 
 void AProjectileActivation::Tick(float DeltaTime)
@@ -27,25 +21,26 @@ void AProjectileActivation::Tick(float DeltaTime)
 
 void AProjectileActivation::DestroyProjectile()
 {
-    Super::DestroyProjectile(); //VFX y SFX en Base
-
-    //// Spawn Explosion
-    //FTransform Transform(GetActorRotation(), GetActorLocation(), ExplosionScale);
-    //UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Explosion, Transform, true,
-    //                                         EPSCPoolMethod::AutoRelease, true);
-
-    // AActor Destroy
-  /*  Super::Destroy();*/
+    Super::DestroyProjectile();
 }
 
 void AProjectileActivation::OnOverlap(UPrimitiveComponent *OverlappedComp, AActor *Other,
                                       UPrimitiveComponent *OtherComp, int32 OtherBodyIndex,
-                                      bool bFromSweep, const FHitResult &SweepResult) 
+                                      bool bFromSweep, const FHitResult &SweepResult)
 {
-    if (Other->ActorHasTag("Activatable"))
+    if (Other->ActorHasTag("Activator"))
     {
-        if (GEngine)
-            GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Purple, "Activatable!");
+        auto *NewActive = Cast<AActivator>(Other);
+
+        NewActive->Activate();
+
+        if (ActivationCompCpp)
+            ActivationCompCpp->SetCurrentlyActive(NewActive);
+    }
+    else
+    {
+        if (ActivationCompCpp)
+            ActivationCompCpp->ResetCurrentlyActive();
     }
 
     DestroyProjectile();
