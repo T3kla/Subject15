@@ -21,6 +21,9 @@ ASubject15Character::ASubject15Character()
     CameraCompCpp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraCompCpp"));
     CameraCompCpp->SetupAttachment(SpringArmCompCpp, USpringArmComponent::SocketName);
 
+	GrabLocation = CreateDefaultSubobject<USceneComponent>(TEXT("GrabLocation"));
+	GrabLocation->SetupAttachment(CameraCompCpp);
+
     PistolMuzzleCompCpp = CreateDefaultSubobject<UArrowComponent>(TEXT("PistolMuzzleCompCpp"));
     PistolMuzzleCompCpp->SetupAttachment(PistolCompCpp);
 
@@ -30,9 +33,12 @@ ASubject15Character::ASubject15Character()
     PistolParticleSystem = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("ParticleSystem"));
     PistolParticleSystem->SetupAttachment(RootComponent);
 
+	// Physics Handle for push/pull power
+    PhysicsHandleCompCpp = CreateDefaultSubobject<UPhysicsHandleComponent>(TEXT("PhysicsHandleCompCpp"));
+
     // Powers
-    // PowerPushPullCompCpp =
-    // CreateDefaultSubobject<UPowerPushPullComponent>(TEXT("PowerPushPullCompCpp"));
+    PowerPushPullCompCpp =
+    CreateDefaultSubobject<UPowerPushPullComponent>(TEXT("PowerPushPullCompCpp"));
 
     PowerActivationCompCpp =
         CreateDefaultSubobject<UPowerActivationComponent>(TEXT("PowerActivationCompCpp"));
@@ -40,7 +46,7 @@ ASubject15Character::ASubject15Character()
     PowerExplosionCompCpp =
         CreateDefaultSubobject<UPowerExplosionComponent>(TEXT("PowerExplosionCompCpp"));
 
-    PowerHookCompCpp = CreateDefaultSubobject<UPowerHookComponent>(TEXT("PowerHookCompCpp"));
+    PowerHookCompCpp = CreateDefaultSubobject<UHookComponent>(TEXT("PowerHookCompCpp"));
 
     // PowerPhaseCompCpp =
     // CreateDefaultSubobject<UPowerPhaseComponent>(TEXT("PowerPhaseCompCpp"));
@@ -61,17 +67,8 @@ void ASubject15Character::BeginPlay()
     InputComponent->BindAction("WeaponToSlot2", IE_Pressed, this, &ASubject15Character::SlotTwo);
     InputComponent->BindAction("Fire", IE_Pressed, this, &ASubject15Character::FirePressed);
     InputComponent->BindAction("Fire", IE_Released, this, &ASubject15Character::FireReleased);
-
-    // Clean Slots
-    for (auto &&Power : Slots)
-        Power = EPowers::None;
-
-    // Camera Fade In at level start
-    if (GEngine)
-    {
-        auto *Cam = GEngine->GetFirstLocalPlayerController(GetWorld())->PlayerCameraManager;
-        Cam->StartCameraFade(1.0f, 0.0f, 1.5f, {0.0f, 0.0f, 0.0f, 0.0f}, false, false);
-    }
+    InputComponent->BindAction("PullCube", IE_Pressed, this, &ASubject15Character::PullCube);
+    InputComponent->BindAction("PushCube", IE_Pressed, this, &ASubject15Character::PushCube);
 
     if (!GunMaterialCpp)
         return;
@@ -84,6 +81,16 @@ void ASubject15Character::BeginPlay()
     for (size_t i = 0; i < PistolCompCpp->GetMaterials().Num(); i++)
         if (i > 0) // Skip first because it's the gun's body
             PistolCompCpp->SetMaterial(i, PistolDynMaterial);
+
+    // Camera Fade In at level start
+    if (GEngine)
+    {
+        auto *Cam = GEngine->GetFirstLocalPlayerController(GetWorld())->PlayerCameraManager;
+        Cam->StartCameraFade(1.0f, 0.0f, 1.5f, {0.0f, 0.0f, 0.0f, 0.0f}, false, false);
+    }
+
+    PhysicsHandleCompCpp->InterpolationSpeed = 5.0f;
+    GrabLocation->SetRelativeLocation(GrabInitialLocation);
 }
 void ASubject15Character::Tick(float DeltaTime)
 {
@@ -113,12 +120,12 @@ void ASubject15Character::MoveHorizontal(float Amount)
 
 void ASubject15Character::Pitch(float Amount)
 {
-    AddControllerPitchInput(100.f * Amount * GetWorld()->GetDeltaSeconds());
+    AddControllerPitchInput(150.f * Amount * GetWorld()->GetDeltaSeconds());
 }
 
 void ASubject15Character::Yaw(float Amount)
 {
-    AddControllerYawInput(100.f * Amount * GetWorld()->GetDeltaSeconds());
+    AddControllerYawInput(200.f * Amount * GetWorld()->GetDeltaSeconds());
 }
 
 void ASubject15Character::JumpStart()
@@ -138,13 +145,13 @@ void ASubject15Character::JumpStop()
 void ASubject15Character::SlotOne()
 {
     CurrentSlot = 1;
-    ChangePower(Slots[0]);
+    ChangePower(SlotOnePower);
 }
 
 void ASubject15Character::SlotTwo()
 {
     CurrentSlot = 2;
-    ChangePower(Slots[1]);
+    ChangePower(SlotTwoPower);
 }
 
 void ASubject15Character::FirePressed()
@@ -159,33 +166,30 @@ void ASubject15Character::FireReleased()
         CurrentPower->FireReleased();
 }
 
+void ASubject15Character::PushCube()
+{
+    if (CurrentPowerEnum == EPowers::PushPull)
+    {
+        Cast<UPowerPushPullComponent>(CurrentPower)->PushObject();
+    }
+}
+
+void ASubject15Character::PullCube()
+{
+	if (CurrentPowerEnum == EPowers::PushPull)
+	{
+        Cast<UPowerPushPullComponent>(CurrentPower)->PullObject();
+	}
+}
+
 #pragma endregion
 
 void ASubject15Character::SetSlot(EPowers NewPower)
 {
-    for (auto &i : Slots)
-    {
-        if (i == NewPower)
-            return;
-
-        else if (i == EPowers::None)
-        {
-            i = NewPower;
-            ChangePower(i);
-            return;
-        }
-    }
-
-    switch (CurrentSlot)
-    {
-    case 1:
-        Slots[0] = NewPower;
-        break;
-
-    case 2:
-        Slots[1] = NewPower;
-        break;
-    }
+    if (CurrentSlot == 1)
+        SlotOnePower = NewPower;
+    else if (CurrentSlot == 2)
+        SlotTwoPower = NewPower;
 
     ChangePower(NewPower);
 }
@@ -208,12 +212,17 @@ void ASubject15Character::ChangePower(EPowers NewPower)
     // Select new Current
     switch (NewPower)
     {
+    case EPowers::PushPull:
+        CurrentPower = PowerPushPullCompCpp;
+        break;
     case EPowers::Activation:
         CurrentPower = PowerActivationCompCpp;
         break;
+
     case EPowers::Hook:
         CurrentPower = PowerHookCompCpp;
         break;
+
     case EPowers::Explosion:
         CurrentPower = PowerExplosionCompCpp;
         break;
@@ -242,9 +251,9 @@ bool ASubject15Character::GetCameraShot(FVector &Start, FVector &End, FHitResult
     RV_TraceParams.bTraceComplex = true;
     RV_TraceParams.bReturnPhysicalMaterial = true;
 
-    auto Hit = GetWorld()->LineTraceSingleByChannel(RV_Hit, A, B, ECC_Pawn, RV_TraceParams);
+    auto hit = GetWorld()->LineTraceSingleByChannel(RV_Hit, A, B, ECC_Pawn, RV_TraceParams);
 
-    if (!Hit)
+    if (!hit)
     {
         Start = A;
         End = B;
@@ -256,17 +265,21 @@ bool ASubject15Character::GetCameraShot(FVector &Start, FVector &End, FHitResult
         HitResult = RV_Hit;
     }
 
-    DrawDebugLine(GetWorld(), Start, End, {255, 1, 1, 255}, false, 2.f, 0, 1.f);
-    return Hit;
+    Start = A;
+    End = RV_Hit.ImpactPoint;
+
+    DrawDebugLine(GetWorld(), A, RV_Hit.ImpactPoint, {255, 1, 1, 255}, false, 2.f, 0, 1.f);
+    return hit;
 }
 
 bool ASubject15Character::GetPistolShot(FVector &Start, FVector &End, FHitResult &HitResult)
 {
-    FVector A;
-    auto Hit = GetCameraShot(A, End, HitResult);
+    FVector A, B;
+    auto hit = GetCameraShot(A, B, HitResult);
 
     Start = PistolMuzzleCompCpp->GetComponentLocation();
+    End = B;
 
     DrawDebugLine(GetWorld(), Start, End, {1, 255, 1, 1}, false, 2.f, 0, 1.f);
-    return Hit;
+    return hit;
 }
