@@ -34,6 +34,7 @@ void AProjectileExplosion::DestroyProjectile()
 	
 	// AActor Destroy
 	// Super::Destroy();
+	
 	Super::DestroyProjectile();
 }
 
