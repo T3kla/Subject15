@@ -1,7 +1,5 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "PowerExplosionComponent.h"
+#include "Subject15Character.h"
 
 // Sets default values for this component's properties
 UPowerExplosionComponent::UPowerExplosionComponent()
@@ -14,7 +12,37 @@ UPowerExplosionComponent::UPowerExplosionComponent()
 void UPowerExplosionComponent::BeginPlay()
 {
 	Super::BeginPlay();
+}
 
-	// ...
-	
+void UPowerExplosionComponent::FirePressed()
+{
+	Super::FirePressed();
+}
+
+void UPowerExplosionComponent::FireReleased()
+{
+	Super::FireReleased();
+}
+
+void UPowerExplosionComponent::ActivatePower()
+{
+	Super::ActivatePower();
+}
+
+void UPowerExplosionComponent::DeactivatePower()
+{
+	Super::DeactivatePower();
+}
+
+void UPowerExplosionComponent::ExecutePower()
+{
+	Super::ExecutePower();
+
+	FVector A, B;
+	FHitResult Res;
+	Character->GetPistolShot(A, B, Res);
+
+	GetWorld()->SpawnActor<AProjectileBase>(this->ProjectilePowerType, A, (B - A).Rotation());
+
+
 }
