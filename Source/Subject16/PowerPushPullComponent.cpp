@@ -61,7 +61,6 @@ void UPowerPushPullComponent::DeactivatePower()
 	if (IsHolding)
 	{
 		Drop();
-		Character->AudioComponentSystem->Stop();
 	}
 }
 
@@ -76,7 +75,6 @@ void UPowerPushPullComponent::ExecutePower()
 	else
 	{
 		Drop();
-		Character->AudioComponentSystem->Stop();
 	}
 }
 
@@ -115,6 +113,7 @@ void UPowerPushPullComponent::Drop()
 		PhysicsObject->SetCollisionResponseToChannel(ECC_Pawn, ECR_Block);
 		GetWorld()->GetTimerManager().SetTimer(GrabTimerHandle, this, &UPowerPushPullComponent::SetDampingDelay, 0.2f, false);
 		GrabParticleSystem->SetVisibility(false);
+		Character->AudioComponentSystem->Stop();
 	}
 }
 
