@@ -31,7 +31,6 @@ class SUBJECT16_API UPowerBaseComponent : public UActorComponent
     UFUNCTION()
     virtual void ExecutePower();
 
-
     void PlayPowerSound();
 
   protected:
@@ -52,11 +51,7 @@ class SUBJECT16_API UPowerBaseComponent : public UActorComponent
     FColor PowerColor;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    AActor *PowerVFX;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    USoundBase* PowerSoundFX;
-
+    USoundBase *PowerSoundFX;
 
     void SetCooldown(float Modifier = 0.f);
     void ResetCooldown();

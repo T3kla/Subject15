@@ -2,7 +2,7 @@
 
 AActivable::AActivable()
 {
-    PrimaryActorTick.bCanEverTick = false;
+    PrimaryActorTick.bCanEverTick = true;
 
     RootCompCpp = CreateDefaultSubobject<USceneComponent>(TEXT("RootCompCpp"));
     SetRootComponent(RootCompCpp);
