@@ -1,6 +1,7 @@
 #pragma once
 
 #include "PowerBaseComponent.h"
+#include "PowerPushPullComponent.h"
 #include "PowerHookComponent.h"
 #include "PowerActivationComponent.h"
 #include "PowerExplosionComponent.h"
@@ -15,6 +16,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Materials/Material.h"
+#include "PhysicsEngine/PhysicsHandleComponent.h"
 #include "Subject15Character.generated.h"
 
 UCLASS()
@@ -31,6 +33,12 @@ class SUBJECT16_API ASubject15Character : public ACharacter
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     UCameraComponent *CameraCompCpp;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	USceneComponent* GrabLocation;
+
+	UPROPERTY()
+	FVector GrabInitialLocation = FVector(250.0f, 0.0f, 20.0f);
+
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     UStaticMeshComponent *PistolCompCpp;
 
@@ -45,9 +53,15 @@ class SUBJECT16_API ASubject15Character : public ACharacter
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     UParticleSystemComponent *PistolParticleSystem;
+    
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+    UParticleSystemComponent *GrabbingParticleSystem;
 
-    // UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-    // UPowerPushPullComponent *PowerPushPullCompCpp;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	UPhysicsHandleComponent* PhysicsHandleCompCpp;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+    UPowerPushPullComponent *PowerPushPullCompCpp;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     UPowerActivationComponent *PowerActivationCompCpp;
@@ -91,6 +105,8 @@ class SUBJECT16_API ASubject15Character : public ACharacter
     void SlotTwo();
     void FirePressed();
     void FireReleased();
+    void PushCube();
+    void PullCube();
 
     void ChangePower(EPowers NewPower);
 
