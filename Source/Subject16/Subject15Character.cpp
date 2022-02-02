@@ -40,7 +40,7 @@ ASubject15Character::ASubject15Character()
     PowerExplosionCompCpp =
         CreateDefaultSubobject<UPowerExplosionComponent>(TEXT("PowerExplosionCompCpp"));
 
-    PowerHookCompCpp = CreateDefaultSubobject<UHookComponent>(TEXT("PowerHookCompCpp"));
+    PowerHookCompCpp = CreateDefaultSubobject<UPowerHookComponent>(TEXT("PowerHookCompCpp"));
 
     // PowerPhaseCompCpp =
     // CreateDefaultSubobject<UPowerPhaseComponent>(TEXT("PowerPhaseCompCpp"));
@@ -62,6 +62,17 @@ void ASubject15Character::BeginPlay()
     InputComponent->BindAction("Fire", IE_Pressed, this, &ASubject15Character::FirePressed);
     InputComponent->BindAction("Fire", IE_Released, this, &ASubject15Character::FireReleased);
 
+    // Clean Slots
+    for (auto &&Power : Slots)
+        Power = EPowers::None;
+
+    // Camera Fade In at level start
+    if (GEngine)
+    {
+        auto *Cam = GEngine->GetFirstLocalPlayerController(GetWorld())->PlayerCameraManager;
+        Cam->StartCameraFade(1.0f, 0.0f, 1.5f, {0.0f, 0.0f, 0.0f, 0.0f}, false, false);
+    }
+
     if (!GunMaterialCpp)
         return;
 
@@ -73,13 +84,6 @@ void ASubject15Character::BeginPlay()
     for (size_t i = 0; i < PistolCompCpp->GetMaterials().Num(); i++)
         if (i > 0) // Skip first because it's the gun's body
             PistolCompCpp->SetMaterial(i, PistolDynMaterial);
-
-    // Camera Fade In at level start
-    if (GEngine)
-    {
-        auto *Cam = GEngine->GetFirstLocalPlayerController(GetWorld())->PlayerCameraManager;
-        Cam->StartCameraFade(1.0f, 0.0f, 1.5f, {0.0f, 0.0f, 0.0f, 0.0f}, false, false);
-    }
 }
 void ASubject15Character::Tick(float DeltaTime)
 {
@@ -134,13 +138,13 @@ void ASubject15Character::JumpStop()
 void ASubject15Character::SlotOne()
 {
     CurrentSlot = 1;
-    ChangePower(SlotOnePower);
+    ChangePower(Slots[0]);
 }
 
 void ASubject15Character::SlotTwo()
 {
     CurrentSlot = 2;
-    ChangePower(SlotTwoPower);
+    ChangePower(Slots[1]);
 }
 
 void ASubject15Character::FirePressed()
@@ -159,10 +163,29 @@ void ASubject15Character::FireReleased()
 
 void ASubject15Character::SetSlot(EPowers NewPower)
 {
-    if (CurrentSlot == 1)
-        SlotOnePower = NewPower;
-    else if (CurrentSlot == 2)
-        SlotTwoPower = NewPower;
+    for (auto &i : Slots)
+    {
+        if (i == NewPower)
+            return;
+
+        else if (i == EPowers::None)
+        {
+            i = NewPower;
+            ChangePower(i);
+            return;
+        }
+    }
+
+    switch (CurrentSlot)
+    {
+    case 1:
+        Slots[0] = NewPower;
+        break;
+
+    case 2:
+        Slots[1] = NewPower;
+        break;
+    }
 
     ChangePower(NewPower);
 }

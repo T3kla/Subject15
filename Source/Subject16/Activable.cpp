@@ -3,6 +3,9 @@
 AActivable::AActivable()
 {
     PrimaryActorTick.bCanEverTick = false;
+
+    RootCompCpp = CreateDefaultSubobject<USceneComponent>(TEXT("RootCompCpp"));
+    SetRootComponent(RootCompCpp);
 }
 
 void AActivable::BeginPlay()

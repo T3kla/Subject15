@@ -10,9 +10,6 @@
 #include "Components/BoxComponent.h"
 #include "LevelPortal.generated.h"
 
-// TODO: Sonido ambiente
-// TODO: Sonido de entrada
-
 UCLASS()
 class SUBJECT16_API ALevelPortal : public AActor
 {

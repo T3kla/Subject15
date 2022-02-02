@@ -21,29 +21,23 @@ void UPowerBaseComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 
 void UPowerBaseComponent::FirePressed()
 {
+    if (IsInCooldown)
+        return;
+
     switch (FireMode)
     {
     case EFireMode::Automatic:
-        if (!IsInCooldown)
-        {
-            GetWorld()->GetTimerManager().SetTimer(
-                AutomaticTimer, this, &UPowerBaseComponent::ExecutePower, FireRate, true, 0.f);
-            SetCooldown();
-        }
+        GetWorld()->GetTimerManager().SetTimer(
+            AutomaticTimer, this, &UPowerBaseComponent::ExecutePower, FireRate, true, 0.f);
+        SetCooldown();
         break;
     case EFireMode::Semiautomatic:
-        if (!IsInCooldown)
-        {
-            ExecutePower();
-            SetCooldown();
-        }
+        ExecutePower();
+        SetCooldown();
         break;
     case EFireMode::Laser:
-        if (!IsInCooldown)
-        {
-            ExecutePower();
-            SetCooldown();
-        }
+        ExecutePower();
+        SetCooldown();
         break;
     default:
         if (GEngine)

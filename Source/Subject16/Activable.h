@@ -9,6 +9,9 @@ class SUBJECT16_API AActivable : public AActor
     GENERATED_BODY()
 
   public:
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+    USceneComponent *RootCompCpp;
+
     UFUNCTION(BlueprintCallable)
     void Activate();
 
