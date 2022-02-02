@@ -23,6 +23,10 @@ void AActivator::BeginPlay()
     auto Materials = PanelEmissiveCompCpp->GetMaterials();
     for (size_t i = 0; i < PanelEmissiveCompCpp->GetMaterials().Num(); i++)
         PanelEmissiveCompCpp->SetMaterial(i, EmissiveDynMaterial);
+
+    // Set initial emissive
+    if (EmissiveDynMaterial)
+        EmissiveDynMaterial->SetScalarParameterValue("Emissive", EmissiveWhenNotActive);
 }
 
 void AActivator::Tick(float DeltaTime)

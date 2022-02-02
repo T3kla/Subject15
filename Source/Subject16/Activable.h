@@ -13,10 +13,10 @@ class SUBJECT16_API AActivable : public AActor
     USceneComponent *RootCompCpp;
 
     UFUNCTION(BlueprintCallable)
-    void Activate();
+    virtual void Activate();
 
     UFUNCTION(BlueprintCallable)
-    void Deactivate();
+    virtual void Deactivate();
 
   protected:
     AActivable();
