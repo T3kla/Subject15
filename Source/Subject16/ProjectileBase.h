@@ -24,31 +24,29 @@ class SUBJECT16_API AProjectileBase : public AActor
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     UProjectileMovementComponent *ProjectileMovementCompCpp;
 
-protected:
-
+  protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-        float Lifetime = 2.f;
+    float Lifetime = 2.f;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-        USoundBase* ProjectileSoundFX;
+    USoundBase *ProjectileSoundFX;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-        UParticleSystem* ProjectileExplosionVFX;
+    UParticleSystem *ProjectileExplosionVFX;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-        FVector ExplosionScale = { .6f, .6f, .6f };
+    FVector ExplosionScale = {.6f, .6f, .6f};
 
   protected:
     virtual void BeginPlay() override;
 
-    virtual void OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other,
-        UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
-        const FHitResult& SweepResult);
-
+    virtual void OnOverlap(UPrimitiveComponent *OverlappedComp, AActor *Other,
+                           UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+                           const FHitResult &SweepResult);
 
     virtual void DestroyProjectile();
 
     virtual void PlayProjectileExplosionSFX();
-  
+
     virtual void PlayProjectileExplosionVFX();
 };
