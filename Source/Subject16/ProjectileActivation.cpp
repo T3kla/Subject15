@@ -11,13 +11,13 @@ void AProjectileActivation::BeginPlay()
 {
     Super::BeginPlay();
 
-    // Bind to Box Collision
-    SphereCompCpp->OnComponentBeginOverlap.AddDynamic(this, &AProjectileActivation::OnOverlap);
+    //// Bind to Box Collision
+    //SphereCompCpp->OnComponentBeginOverlap.AddDynamic(this, &AProjectileActivation::OnOverlap);
 
-    // Lifetime
-    FTimerHandle LifetimeTimer;
-    GetWorld()->GetTimerManager().SetTimer(
-        LifetimeTimer, this, &AProjectileActivation::DestroyProjectile, Lifetime, false);
+    //// Lifetime
+    //FTimerHandle LifetimeTimer;
+    //GetWorld()->GetTimerManager().SetTimer(
+    //    LifetimeTimer, this, &AProjectileActivation::DestroyProjectile, Lifetime, false);
 }
 
 void AProjectileActivation::Tick(float DeltaTime)
@@ -27,18 +27,20 @@ void AProjectileActivation::Tick(float DeltaTime)
 
 void AProjectileActivation::DestroyProjectile()
 {
-    // Spawn Explosion
-    FTransform Transform(GetActorRotation(), GetActorLocation(), ExplosionScale);
-    UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Explosion, Transform, true,
-                                             EPSCPoolMethod::AutoRelease, true);
+    Super::DestroyProjectile(); //VFX y SFX en Base
+
+    //// Spawn Explosion
+    //FTransform Transform(GetActorRotation(), GetActorLocation(), ExplosionScale);
+    //UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Explosion, Transform, true,
+    //                                         EPSCPoolMethod::AutoRelease, true);
 
     // AActor Destroy
-    Super::Destroy();
+  /*  Super::Destroy();*/
 }
 
 void AProjectileActivation::OnOverlap(UPrimitiveComponent *OverlappedComp, AActor *Other,
                                       UPrimitiveComponent *OtherComp, int32 OtherBodyIndex,
-                                      bool bFromSweep, const FHitResult &SweepResult)
+                                      bool bFromSweep, const FHitResult &SweepResult) 
 {
     if (Other->ActorHasTag("Activatable"))
     {

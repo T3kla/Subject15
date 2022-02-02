@@ -51,6 +51,10 @@ class SUBJECT16_API UPowerBaseComponent : public UActorComponent
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     AActor *PowerVFX;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+        USoundBase* PowerSoundFX;
+
+
     void SetCooldown(float Modifier = 0.f);
     void ResetCooldown();
 
@@ -59,4 +63,6 @@ class SUBJECT16_API UPowerBaseComponent : public UActorComponent
     bool IsInCooldown = false;
 
     ASubject15Character *Character;
+
+    void PlayPowerSound();
 };
