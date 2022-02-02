@@ -28,11 +28,20 @@ class SUBJECT16_API AActivator : public AActor
     virtual void Tick(float DeltaTime) override;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-    FColor ColorIfActive = {255, 255, 255};
+    UStaticMeshComponent *PanelEmissiveCompCpp;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-    FColor ColorIfNotActive = {1, 1, 1};
+    UMaterial *EmissiveMaterial;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+    float EmissiveWhenActive = 24.f;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+    float EmissiveWhenNotActive = 0.f;
 
     UPROPERTY(EditInstanceOnly)
     TArray<AActivable *> ActivablesArray;
+
+  private:
+    UMaterialInstanceDynamic *EmissiveDynMaterial;
 };

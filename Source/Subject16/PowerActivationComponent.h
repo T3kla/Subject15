@@ -4,6 +4,8 @@
 #include "PowerBaseComponent.h"
 #include "PowerActivationComponent.generated.h"
 
+class AActivator;
+
 UCLASS()
 class SUBJECT16_API UPowerActivationComponent : public UPowerBaseComponent
 {
@@ -12,12 +14,11 @@ class SUBJECT16_API UPowerActivationComponent : public UPowerBaseComponent
   public:
     UPowerActivationComponent();
 
-    virtual void FirePressed() override;
-    virtual void FireReleased() override;
-    virtual void ActivatePower() override;
-    virtual void DeactivatePower() override;
     virtual void ExecutePower() override;
 
+    void SetCurrentlyActive(AActivator *NewActive);
+    void ResetCurrentlyActive();
+
   protected:
-    virtual void BeginPlay() override;
+    AActivator *CurrentlyActive;
 };
