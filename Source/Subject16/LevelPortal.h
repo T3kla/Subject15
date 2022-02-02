@@ -1,14 +1,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
-#include "Materials/MaterialInstance.h"
-#include "Materials/MaterialInstanceDynamic.h"
-#include "Particles/ParticleSystemComponent.h"
-#include "Kismet/GameplayStatics.h"
-#include "Engine/DataTable.h"
-#include "Components/BoxComponent.h"
 #include "LevelPortal.generated.h"
+
+class USceneComponent;
+class UBoxComponent;
+class UDataTable;
+class UParticleSystemComponent;
+class APlayerCameraManager;
 
 UCLASS()
 class SUBJECT16_API ALevelPortal : public AActor

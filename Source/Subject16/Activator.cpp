@@ -16,6 +16,12 @@ void AActivator::BeginPlay()
 {
     Super::BeginPlay();
 
+    if (ActivablesArray.Num() == 0)
+    {
+        Empty = true;
+        return;
+    }
+
     // Create Dyn Material
     EmissiveDynMaterial = UMaterialInstanceDynamic::Create(EmissiveMaterial, this);
 
@@ -33,7 +39,10 @@ void AActivator::Activate()
 {
     IsActive = true;
 
-    // Activate dependacies
+    if (Empty)
+        return;
+
+    // Activate dependencies
     for (auto &&Activable : ActivablesArray)
         Activable->Activate();
 
@@ -45,6 +54,9 @@ void AActivator::Activate()
 void AActivator::Deactivate()
 {
     IsActive = false;
+
+    if (Empty)
+        return;
 
     // Deactivate dependacies
     for (auto &&Activable : ActivablesArray)

@@ -43,4 +43,6 @@ class SUBJECT16_API AActivator : public AActor
 
   private:
     UMaterialInstanceDynamic *EmissiveDynMaterial;
+
+    bool Empty = false;
 };

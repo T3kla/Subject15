@@ -1,7 +1,9 @@
 #include "LevelPortal.h"
 #include "LevelPortalStructureCpp.h"
-#include "Containers/UnrealString.h"
-#include "GameFramework/Character.h"
+#include "Particles/ParticleSystemComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Engine/DataTable.h"
+#include "Components/BoxComponent.h"
 
 ALevelPortal::ALevelPortal()
 {
@@ -11,11 +13,11 @@ ALevelPortal::ALevelPortal()
     SetRootComponent(RootCompCpp);
 
     BoxCompCpp = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCompCpp"));
-    BoxCompCpp->SetupAttachment(RootCompCpp);
+    BoxCompCpp->SetupAttachment(RootCompCpp, RootCompCpp->GetAttachSocketName());
 
     PortalParticleSystemCompCpp =
         CreateDefaultSubobject<UParticleSystemComponent>(TEXT("PortalParticleSystemCompCpp"));
-    PortalParticleSystemCompCpp->SetupAttachment(RootCompCpp);
+    PortalParticleSystemCompCpp->SetupAttachment(RootCompCpp, RootCompCpp->GetAttachSocketName());
 }
 
 void ALevelPortal::BeginPlay()
