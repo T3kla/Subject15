@@ -60,6 +60,13 @@ void AProjectileBase::PlayProjectileExplosionSFX()
 
         UGameplayStatics::PlaySoundAtLocation(this, ProjectileSoundFX, SoundLocation);
     }
+    else {
+        if (GEngine) {
+
+            GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Yellow,
+                "You MUST include a SoundFX to this Projectile!");
+        }
+    }
 }
 
 void AProjectileBase::PlayProjectileExplosionVFX()
@@ -72,5 +79,13 @@ void AProjectileBase::PlayProjectileExplosionVFX()
     
     UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ProjectileExplosionVFX, VFXTransform, true,
         EPSCPoolMethod::AutoRelease, true);
+    }
+    else
+    {
+        if (GEngine) {
+
+            GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Yellow,
+                "You MUST include a ExplosionVFX-(ParticleSystem)- to this Power!");
+        }
     }
 }
