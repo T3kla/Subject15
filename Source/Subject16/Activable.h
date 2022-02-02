@@ -9,6 +9,8 @@ class SUBJECT16_API AActivable : public AActor
     GENERATED_BODY()
 
   public:
+    AActivable();
+
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     USceneComponent *RootCompCpp;
 
@@ -19,7 +21,6 @@ class SUBJECT16_API AActivable : public AActor
     virtual void Deactivate();
 
   protected:
-    AActivable();
     virtual void BeginPlay() override;
     virtual void Tick(float DeltaTime) override;
 };

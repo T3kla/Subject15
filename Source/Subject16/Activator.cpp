@@ -29,11 +29,6 @@ void AActivator::BeginPlay()
         EmissiveDynMaterial->SetScalarParameterValue("Emissive", EmissiveWhenNotActive);
 }
 
-void AActivator::Tick(float DeltaTime)
-{
-    Super::Tick(DeltaTime);
-}
-
 void AActivator::Activate()
 {
     IsActive = true;

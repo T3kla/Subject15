@@ -1,9 +1,11 @@
 #include "ActivableDoor.h"
 #include "Engine/TargetPoint.h"
 #include "Math/UnrealMathUtility.h"
+#include "Curves/CurveFloat.h"
 
 AActivableDoor::AActivableDoor()
 {
+    PrimaryActorTick.bCanEverTick = true;
 }
 
 void AActivableDoor::BeginPlay()
@@ -11,25 +13,16 @@ void AActivableDoor::BeginPlay()
     Super::BeginPlay();
 
     // Save positions
-    if (InitialPosition && FinalPosition)
+    if (TargetInitial && TargetFinal)
     {
-        InitPos = InitialPosition->GetActorLocation();
-        FinalPos = FinalPosition->GetActorLocation();
-        if (GEngine)
-            GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Red, "Coge positions");
+        InitPos = TargetInitial->GetActorLocation();
+        FinalPos = TargetFinal->GetActorLocation();
     }
     else
     {
         InitPos = GetActorLocation();
         FinalPos = GetActorLocation();
     }
-
-    if (GEngine)
-        GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Red,
-                                         FString::Printf(TEXT("InitPos = %d"), InitPos.Z));
-    if (GEngine)
-        GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Red,
-                                         FString::Printf(TEXT("FinalPos = %d"), FinalPos.Z));
 }
 
 void AActivableDoor::Tick(float DeltaTime)
@@ -44,9 +37,10 @@ void AActivableDoor::Tick(float DeltaTime)
 
     // Clamp Progress
     Progress = Progress > 1.f ? 1.f : Progress < 0.f ? 0.f : Progress;
+    auto AnimProg = AnimationCurve->GetFloatValue(Progress);
 
     // Update Position
-    auto NewPosition = InitPos + (FinalPos - InitPos) * Progress;
+    auto NewPosition = InitPos + (FinalPos - InitPos) * AnimProg;
     SetActorLocation(NewPosition);
 }
 

@@ -17,20 +17,25 @@ class SUBJECT16_API AActivableDoor : public AActivable
     UPROPERTY(VisibleInstanceOnly)
     bool IsActive;
 
-    UPROPERTY(EditInstanceOnly)
-    ATargetPoint *InitialPosition;
-
-    UPROPERTY(EditInstanceOnly)
-    ATargetPoint *FinalPosition;
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+    UCurveFloat *AnimationCurve;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     float Speed;
 
-  private:
-    virtual void BeginPlay() override;
-    virtual void Tick(float DeltaTime) override;
     virtual void Activate() override;
     virtual void Deactivate() override;
+
+protected:
+    virtual void BeginPlay() override;
+    virtual void Tick(float DeltaTime) override;
+
+  private:
+    UPROPERTY(EditInstanceOnly)
+    ATargetPoint *TargetInitial;
+
+    UPROPERTY(EditInstanceOnly)
+    ATargetPoint *TargetFinal;
 
     FVector InitPos = {0.f, 0.f, 0.f};
     FVector FinalPos = {0.f, 0.f, 0.f};

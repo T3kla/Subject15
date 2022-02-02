@@ -10,6 +10,9 @@ class SUBJECT16_API AActivator : public AActor
     GENERATED_BODY()
 
   public:
+    AActivator();
+    virtual void BeginPlay() override;
+
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     USceneComponent *RootCompCpp;
 
@@ -23,10 +26,6 @@ class SUBJECT16_API AActivator : public AActor
     bool IsActive;
 
   protected:
-    AActivator();
-    virtual void BeginPlay() override;
-    virtual void Tick(float DeltaTime) override;
-
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     UStaticMeshComponent *PanelEmissiveCompCpp;
 
