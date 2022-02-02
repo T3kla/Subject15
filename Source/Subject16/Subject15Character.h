@@ -11,6 +11,7 @@
 #include "GameFramework/Character.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/AudioComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/ArrowComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -49,6 +50,9 @@ class SUBJECT16_API ASubject15Character : public ACharacter
     USceneComponent *PistolFXPointCompCpp; // Effects attatch to this
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+    UAudioComponent* AudioComponentSystem;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     UMaterial *GunMaterialCpp;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
@@ -57,8 +61,8 @@ class SUBJECT16_API ASubject15Character : public ACharacter
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     UParticleSystemComponent *GrabbingParticleSystem;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	UPhysicsHandleComponent* PhysicsHandleCompCpp;
+	  UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	  UPhysicsHandleComponent* PhysicsHandleCompCpp;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     UPowerPushPullComponent *PowerPushPullCompCpp;

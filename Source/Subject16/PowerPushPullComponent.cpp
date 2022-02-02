@@ -1,5 +1,6 @@
 #include "PowerPushPullComponent.h"
 #include "Subject15Character.h"
+#include "Kismet/GameplayStatics.h"
 
 UPowerPushPullComponent::UPowerPushPullComponent()
 {
@@ -48,6 +49,8 @@ void UPowerPushPullComponent::FireReleased()
 void UPowerPushPullComponent::ActivatePower()
 {
 	Super::ActivatePower();
+
+	Character->AudioComponentSystem->SetSound(PowerSoundFX);
 	Character->GrabbingParticleSystem->SetTemplate(GrabTemplateParticle);
 }
 
@@ -58,6 +61,7 @@ void UPowerPushPullComponent::DeactivatePower()
 	if (IsHolding)
 	{
 		Drop();
+		Character->AudioComponentSystem->Stop();
 	}
 }
 
@@ -72,6 +76,7 @@ void UPowerPushPullComponent::ExecutePower()
 	else
 	{
 		Drop();
+		Character->AudioComponentSystem->Stop();
 	}
 }
 
@@ -88,6 +93,7 @@ void UPowerPushPullComponent::Grab()
 			PhysicsObject = Cast<UPrimitiveComponent>(HitResult.Component);
 			PhysicsObject->SetMobility(EComponentMobility::Movable);
 			PhysicsObject->SetSimulatePhysics(true);
+
 			Character->PhysicsHandleCompCpp->GrabComponentAtLocation(PhysicsObject, "None", HitResult.Location);
 			IsHolding = true;
 			PhysicsObject->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
@@ -95,6 +101,7 @@ void UPowerPushPullComponent::Grab()
 			PhysicsObject->SetAllPhysicsLinearVelocity(FVector(0.0f, 0.0f, 0.0f));
 			
 			GrabParticleSystem->SetVisibility(true);
+			Character->AudioComponentSystem->Play();
 		}
 	}
 }

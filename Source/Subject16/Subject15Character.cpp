@@ -21,8 +21,11 @@ ASubject15Character::ASubject15Character()
     CameraCompCpp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraCompCpp"));
     CameraCompCpp->SetupAttachment(SpringArmCompCpp, USpringArmComponent::SocketName);
 
-	GrabLocation = CreateDefaultSubobject<USceneComponent>(TEXT("GrabLocation"));
-	GrabLocation->SetupAttachment(CameraCompCpp);
+    AudioComponentSystem = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioCompCpp"));
+    AudioComponentSystem->SetupAttachment(RootComponent);
+
+	  GrabLocation = CreateDefaultSubobject<USceneComponent>(TEXT("GrabLocation"));
+	  GrabLocation->SetupAttachment(CameraCompCpp);
 
     PistolMuzzleCompCpp = CreateDefaultSubobject<UArrowComponent>(TEXT("PistolMuzzleCompCpp"));
     PistolMuzzleCompCpp->SetupAttachment(PistolCompCpp);
@@ -292,7 +295,7 @@ bool ASubject15Character::GetCameraShot(FVector &Start, FVector &End, FHitResult
         HitResult = RV_Hit;
     }
 
-    DrawDebugLine(GetWorld(), Start, End, {255, 1, 1, 255}, false, 2.f, 0, 1.f);
+    //DrawDebugLine(GetWorld(), Start, End, {255, 1, 1, 255}, false, 2.f, 0, 1.f);
     return Hit;
 }
 
@@ -303,6 +306,6 @@ bool ASubject15Character::GetPistolShot(FVector &Start, FVector &End, FHitResult
 
     Start = PistolMuzzleCompCpp->GetComponentLocation();
 
-    DrawDebugLine(GetWorld(), Start, End, {1, 255, 1, 1}, false, 2.f, 0, 1.f);
+    //DrawDebugLine(GetWorld(), Start, End, {1, 255, 1, 1}, false, 2.f, 0, 1.f);
     return Hit;
 }

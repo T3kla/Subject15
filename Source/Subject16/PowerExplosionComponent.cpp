@@ -1,5 +1,7 @@
 #include "PowerExplosionComponent.h"
 #include "Subject15Character.h"
+#include "Kismet/GameplayStatics.h"
+
 
 // Sets default values for this component's properties
 UPowerExplosionComponent::UPowerExplosionComponent()
@@ -42,7 +44,11 @@ void UPowerExplosionComponent::ExecutePower()
 	FHitResult Res;
 	Character->GetPistolShot(A, B, Res);
 
+	FVector SoundLocation = Character->GetArrowComponent()->GetComponentTransform().GetLocation();
+	UGameplayStatics::PlaySoundAtLocation(this, PowerSoundFX, SoundLocation 
+	/*, float VolumeMultiplier = 1.f, float PitchMultiplier = 1.f, 
+	float StartTime = 0.f, class USoundAttenuation* AttenuationSettings = nullptr, 
+	USoundConcurrency * ConcurrencySettings = nullptr*/);
+
 	GetWorld()->SpawnActor<AProjectileBase>(this->ProjectilePowerType, A, (B - A).Rotation());
-
-
 }

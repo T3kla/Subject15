@@ -69,14 +69,19 @@ void UPowerHookComponent::ExecutePower()
 
     if (Character->GetCameraShot(A, B, Res))
     {
-        HookLocation = B;
-        ShootGrappleHook();
-        LaunchCharacter(InitForce, true);
+        if (Res.Component->ComponentHasTag("HookEvent")) 
+        {
+            HookLocation = B;
+            ShootGrappleHook();
+            LaunchCharacter(InitForce, true);
 
-        GetWorld()->GetTimerManager().SetTimer(
-            TimerHandleInit, this, &UPowerHookComponent::LaunchCharacterForce, 0.2f, false);
-        GetWorld()->GetTimerManager().SetTimer(TimerHandleForce, this,
-                                               &UPowerHookComponent::ResetGrappleHook, 0.5f, false);
+            GetWorld()->GetTimerManager().SetTimer(
+                TimerHandleInit, this, &UPowerHookComponent::LaunchCharacterForce, 0.2f, false);
+            GetWorld()->GetTimerManager().SetTimer(TimerHandleForce, this,
+                                                   &UPowerHookComponent::ResetGrappleHook, 0.5f, false);
+
+        }
+
     }
     else
         ResetGrappleHook();

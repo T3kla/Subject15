@@ -31,6 +31,9 @@ class SUBJECT16_API UPowerBaseComponent : public UActorComponent
     UFUNCTION()
     virtual void ExecutePower();
 
+
+    void PlayPowerSound();
+
   protected:
     virtual void BeginPlay() override;
     virtual void TickComponent(float DeltaTime, enum ELevelTick TickType,
@@ -52,7 +55,7 @@ class SUBJECT16_API UPowerBaseComponent : public UActorComponent
     AActor *PowerVFX;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-        USoundBase* PowerSoundFX;
+    USoundBase* PowerSoundFX;
 
 
     void SetCooldown(float Modifier = 0.f);
@@ -63,6 +66,4 @@ class SUBJECT16_API UPowerBaseComponent : public UActorComponent
     bool IsInCooldown = false;
 
     ASubject15Character *Character;
-
-    void PlayPowerSound();
 };
