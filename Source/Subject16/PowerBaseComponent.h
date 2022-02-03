@@ -4,6 +4,7 @@
 #include "Components/ActorComponent.h"
 #include "EnumFireMode.h"
 #include "ProjectileBase.h"
+#include "Engine/Texture.h"
 #include "PowerBaseComponent.generated.h"
 
 class ASubject15Character;
@@ -53,6 +54,8 @@ class SUBJECT16_API UPowerBaseComponent : public UActorComponent
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     USoundBase *PowerSoundFX;
 
+    
+
     void SetCooldown(float Modifier = 0.f);
     void ResetCooldown();
 
@@ -61,4 +64,11 @@ class SUBJECT16_API UPowerBaseComponent : public UActorComponent
     bool IsInCooldown = false;
 
     ASubject15Character *Character;
+
+public:
+    /*Crear variable FText Name para el power y UTexture para Img HUD*/
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+        UTexture* PowerImg;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+        FText PowerName;
 };
