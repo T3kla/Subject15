@@ -49,7 +49,7 @@ void UPowerHookComponent::LaunchCharacter(FVector &Velocity, bool Override)
 
 void UPowerHookComponent::LaunchCharacterForce()
 {
-    FVector Velocity = (HookLocation - Character->GetActorLocation()) * 1.5f;
+    FVector Velocity = (HookLocation - Character->GetActorLocation()) * 2.0f;
     LaunchCharacter(Velocity, false);
 }
 
