@@ -27,6 +27,8 @@ void UPowerActivationComponent::SetCurrentlyActive(AActivator *NewActive)
 {
     ResetCurrentlyActive();
 
+    NewActive->Activate();
+
     CurrentlyActive = NewActive;
 }
 

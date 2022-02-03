@@ -47,15 +47,13 @@ void AActivableDoor::Tick(float DeltaTime)
 void AActivableDoor::Activate()
 {
     Super::Activate();
-    if (GEngine)
-        GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Red, "Activate");
+
     IsActive = true;
 }
 
 void AActivableDoor::Deactivate()
 {
     Super::Deactivate();
-    GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Red, "DeActivate");
 
     IsActive = false;
 }

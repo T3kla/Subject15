@@ -1,4 +1,5 @@
 #include "Activator.h"
+#include "Components/BoxComponent.h"
 
 AActivator::AActivator()
 {
@@ -10,6 +11,9 @@ AActivator::AActivator()
     PanelEmissiveCompCpp =
         CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PanelEmissiveCompCpp"));
     PanelEmissiveCompCpp->SetupAttachment(RootCompCpp);
+
+    BoxCompCpp = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCompCpp"));
+    BoxCompCpp->SetupAttachment(RootCompCpp);
 }
 
 void AActivator::BeginPlay()

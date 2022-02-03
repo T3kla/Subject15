@@ -4,6 +4,8 @@
 #include "Activable.h"
 #include "Activator.generated.h"
 
+class UBoxComponent;
+
 UCLASS()
 class SUBJECT16_API AActivator : public AActor
 {
@@ -28,6 +30,9 @@ class SUBJECT16_API AActivator : public AActor
   protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     UStaticMeshComponent *PanelEmissiveCompCpp;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+    UBoxComponent *BoxCompCpp;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     UMaterial *EmissiveMaterial;
