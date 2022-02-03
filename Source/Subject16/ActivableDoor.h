@@ -17,16 +17,16 @@ class SUBJECT16_API AActivableDoor : public AActivable
     UPROPERTY(VisibleInstanceOnly)
     bool IsActive;
 
-    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-    UCurveFloat *AnimationCurve;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    float Speed;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-    float Speed;
+    UCurveFloat *AnimationCurve;
 
     virtual void Activate() override;
     virtual void Deactivate() override;
 
-protected:
+  protected:
     virtual void BeginPlay() override;
     virtual void Tick(float DeltaTime) override;
 
