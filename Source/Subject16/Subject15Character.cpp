@@ -24,8 +24,8 @@ ASubject15Character::ASubject15Character()
     AudioComponentSystem = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioCompCpp"));
     AudioComponentSystem->SetupAttachment(RootComponent);
 
-	  GrabLocation = CreateDefaultSubobject<USceneComponent>(TEXT("GrabLocation"));
-	  GrabLocation->SetupAttachment(CameraCompCpp);
+    GrabLocation = CreateDefaultSubobject<USceneComponent>(TEXT("GrabLocation"));
+    GrabLocation->SetupAttachment(CameraCompCpp);
 
     PistolMuzzleCompCpp = CreateDefaultSubobject<UArrowComponent>(TEXT("PistolMuzzleCompCpp"));
     PistolMuzzleCompCpp->SetupAttachment(PistolCompCpp);
@@ -35,12 +35,14 @@ ASubject15Character::ASubject15Character()
 
     PistolParticleSystem = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("ParticleSystem"));
     PistolParticleSystem->SetupAttachment(RootComponent);
-    
-    GrabbingParticleSystem = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("GrabbingParticleSystem"));
+
+    GrabbingParticleSystem =
+        CreateDefaultSubobject<UParticleSystemComponent>(TEXT("GrabbingParticleSystem"));
     GrabbingParticleSystem->SetupAttachment(RootComponent);
 
-	// Physics Handle for push/pull power
-	PhysicsHandleCompCpp = CreateDefaultSubobject<UPhysicsHandleComponent>(TEXT("PhysicsHandleCompCpp"));
+    // Physics Handle for push/pull power
+    PhysicsHandleCompCpp =
+        CreateDefaultSubobject<UPhysicsHandleComponent>(TEXT("PhysicsHandleCompCpp"));
 
     // Powers
     PowerPushPullCompCpp =
@@ -73,8 +75,8 @@ void ASubject15Character::BeginPlay()
     InputComponent->BindAction("WeaponToSlot2", IE_Pressed, this, &ASubject15Character::SlotTwo);
     InputComponent->BindAction("Fire", IE_Pressed, this, &ASubject15Character::FirePressed);
     InputComponent->BindAction("Fire", IE_Released, this, &ASubject15Character::FireReleased);
-	InputComponent->BindAction("PullCube", IE_Pressed, this, &ASubject15Character::PullCube);
-	InputComponent->BindAction("PushCube", IE_Pressed, this, &ASubject15Character::PushCube);
+    InputComponent->BindAction("PullCube", IE_Pressed, this, &ASubject15Character::PullCube);
+    InputComponent->BindAction("PushCube", IE_Pressed, this, &ASubject15Character::PushCube);
 
     // Clean Slots
     for (auto &&Power : Slots)
@@ -100,10 +102,10 @@ void ASubject15Character::BeginPlay()
             PistolCompCpp->SetMaterial(i, PistolDynMaterial);
 
     // Grabbed cube movement velocity
-	PhysicsHandleCompCpp->InterpolationSpeed = 5.0f;
+    PhysicsHandleCompCpp->InterpolationSpeed = 5.0f;
 
     // Set the initial grabbed cube location
-	GrabLocation->SetRelativeLocation(GrabInitialLocation);
+    GrabLocation->SetRelativeLocation(GrabInitialLocation);
 }
 void ASubject15Character::Tick(float DeltaTime)
 {
@@ -181,18 +183,18 @@ void ASubject15Character::FireReleased()
 
 void ASubject15Character::PushCube()
 {
-	if (CurrentPowerEnum == EPowers::PushPull)
-	{
-		Cast<UPowerPushPullComponent>(CurrentPower)->PushObject();
-	}
+    if (CurrentPowerEnum == EPowers::PushPull)
+    {
+        Cast<UPowerPushPullComponent>(CurrentPower)->PushObject();
+    }
 }
 
 void ASubject15Character::PullCube()
 {
-	if (CurrentPowerEnum == EPowers::PushPull)
-	{
-		Cast<UPowerPushPullComponent>(CurrentPower)->PullObject();
-	}
+    if (CurrentPowerEnum == EPowers::PushPull)
+    {
+        Cast<UPowerPushPullComponent>(CurrentPower)->PullObject();
+    }
 }
 
 #pragma endregion
@@ -295,7 +297,7 @@ bool ASubject15Character::GetCameraShot(FVector &Start, FVector &End, FHitResult
         HitResult = RV_Hit;
     }
 
-    //DrawDebugLine(GetWorld(), Start, End, {255, 1, 1, 255}, false, 2.f, 0, 1.f);
+    // DrawDebugLine(GetWorld(), Start, End, {255, 1, 1, 255}, false, 2.f, 0, 1.f);
     return Hit;
 }
 
@@ -306,6 +308,6 @@ bool ASubject15Character::GetPistolShot(FVector &Start, FVector &End, FHitResult
 
     Start = PistolMuzzleCompCpp->GetComponentLocation();
 
-    //DrawDebugLine(GetWorld(), Start, End, {1, 255, 1, 1}, false, 2.f, 0, 1.f);
+    // DrawDebugLine(GetWorld(), Start, End, {1, 255, 1, 1}, false, 2.f, 0, 1.f);
     return Hit;
 }
