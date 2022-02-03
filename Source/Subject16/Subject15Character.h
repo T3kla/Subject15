@@ -18,6 +18,7 @@
 #include "Camera/CameraComponent.h"
 #include "Materials/Material.h"
 #include "PhysicsEngine/PhysicsHandleComponent.h"
+#include "Engine/Texture.h"
 #include "Subject15Character.generated.h"
 
 UCLASS()
@@ -88,6 +89,9 @@ class SUBJECT16_API ASubject15Character : public ACharacter
     UFUNCTION()
     bool GetPistolShot(FVector &Start, FVector &End, FHitResult &HitResult);
 
+    UFUNCTION(BlueprintImplementableEvent)
+     void OnPowerChange(const UTexture* PowerImg, const FText PowerName);
+
   protected:
     virtual void BeginPlay() override;
     virtual void Tick(float DeltaTime) override;
@@ -119,6 +123,9 @@ class SUBJECT16_API ASubject15Character : public ACharacter
 
     EPowers CurrentPowerEnum = EPowers::None;
     uint8 CurrentSlot = 1;
-    UPowerBaseComponent *CurrentPower = nullptr;
     TArray<UPowerBaseComponent *> PowerArray;
+
+    public:
+    UPowerBaseComponent *CurrentPower = nullptr;
+
 };

@@ -56,11 +56,12 @@ void UPowerBaseComponent::FireReleased()
 void UPowerBaseComponent::ActivatePower()
 {
 	Character->SetPistolColor(PowerColor);
+	//Character->OnPowerChange(PowerImg, PowerName);
 }
 
 void UPowerBaseComponent::DeactivatePower()
 {
-
+	FireReleased();
 }
 
 void UPowerBaseComponent::ExecutePower()
@@ -95,7 +96,6 @@ void UPowerBaseComponent::PlayPowerSound()
 	//else
 	//{
 	//	if (GEngine) {
-
 	//		GEngine->AddOnScreenDebugMessage(-1, 2.5f, FColor::Yellow,
 	//			"You MUST include a SoundFX to this Power!");
 	//	}

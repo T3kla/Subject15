@@ -107,6 +107,7 @@ void ASubject15Character::BeginPlay()
     // Set the initial grabbed cube location
     GrabLocation->SetRelativeLocation(GrabInitialLocation);
 }
+
 void ASubject15Character::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
@@ -264,6 +265,7 @@ void ASubject15Character::ChangePower(EPowers NewPower)
         break;
     }
 
+    OnPowerChange(CurrentPower->PowerImg, CurrentPower->PowerName); //Cambiar PowerInfo en HUD BP Implement
     // Activate new Power
     if (CurrentPower)
         CurrentPower->ActivatePower();
