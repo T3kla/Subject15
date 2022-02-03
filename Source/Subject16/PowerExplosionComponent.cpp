@@ -43,10 +43,7 @@ void UPowerExplosionComponent::ExecutePower()
     Character->GetPistolShot(A, B, Res);
 
     FVector SoundLocation = Character->GetActorLocation();
-    UGameplayStatics::PlaySoundAtLocation(this, PowerSoundFX, SoundLocation 
-	/*, float VolumeMultiplier = 1.f, float PitchMultiplier = 1.f, 
-	float StartTime = 0.f, class USoundAttenuation* AttenuationSettings = nullptr, 
-	USoundConcurrency * ConcurrencySettings = nullptr*/);
+    UGameplayStatics::PlaySoundAtLocation(this, PowerSoundFX, SoundLocation);
 
     GetWorld()->SpawnActor<AProjectileBase>(this->ProjectilePowerType, A, (B - A).Rotation());
 }
