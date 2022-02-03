@@ -10,13 +10,6 @@ AProjectileExplosion::AProjectileExplosion()
 void AProjectileExplosion::BeginPlay()
 {
 	Super::BeginPlay();
-
-	SphereCompCpp->OnComponentBeginOverlap.AddDynamic(this, &AProjectileExplosion::OnOverlap);
-
-	// LifeTime
-	FTimerHandle LifetimeTimer;
-	GetWorld()->GetTimerManager().SetTimer(
-		LifetimeTimer, this, &AProjectileExplosion::DestroyProjectile, Lifetime, false);
 }
 
 void AProjectileExplosion::Tick(float DeltaTime)
