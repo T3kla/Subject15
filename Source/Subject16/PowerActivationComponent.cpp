@@ -16,7 +16,7 @@ void UPowerActivationComponent::ExecutePower()
     FHitResult Res;
     Character->GetPistolShot(A, B, Res);
 
-    auto Bullet = Cast<AProjectileActivation>(
+    auto *Bullet = Cast<AProjectileActivation>(
         GetWorld()->SpawnActor<AProjectileBase>(this->ProjectilePowerType, A, (B - A).Rotation()));
 
     if (Bullet)
