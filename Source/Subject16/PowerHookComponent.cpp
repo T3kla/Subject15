@@ -70,7 +70,7 @@ void UPowerHookComponent::ExecutePower()
 
     if (Character->GetCameraShot(A, B, Res))
     {
-        if (Res.Component->ComponentHasTag("HookEvent")) 
+        if (Res.Component->ComponentHasTag("HookEvent"))
         {
             HookLocation = B;
             ShootGrappleHook();
@@ -78,13 +78,12 @@ void UPowerHookComponent::ExecutePower()
 
             GetWorld()->GetTimerManager().SetTimer(
                 TimerHandleInit, this, &UPowerHookComponent::LaunchCharacterForce, 0.2f, false);
-            GetWorld()->GetTimerManager().SetTimer(TimerHandleForce, this,
-                                                   &UPowerHookComponent::ResetGrappleHook, 0.5f, false);
+            GetWorld()->GetTimerManager().SetTimer(
+                TimerHandleForce, this, &UPowerHookComponent::ResetGrappleHook, 0.5f, false);
 
-            FVector SoundLocation = Character->GetArrowComponent()->GetComponentTransform().GetLocation();
+            FVector SoundLocation = Character->GetActorLocation();
             UGameplayStatics::PlaySoundAtLocation(this, PowerSoundFX, SoundLocation);
         }
-
     }
     else
         ResetGrappleHook();
