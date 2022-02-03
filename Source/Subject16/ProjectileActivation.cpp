@@ -32,14 +32,14 @@ void AProjectileActivation::OnOverlap(UPrimitiveComponent *OverlappedComp, AActo
     {
         auto *NewActive = Cast<AActivator>(Other);
 
-        NewActive->Activate();
-
         if (ActivationCompCpp)
             ActivationCompCpp->SetCurrentlyActive(NewActive);
     }
-
-    if (ActivationCompCpp)
-        ActivationCompCpp->ResetCurrentlyActive();
+    else
+    {
+        if (ActivationCompCpp)
+            ActivationCompCpp->ResetCurrentlyActive();
+    }
 
     DestroyProjectile();
 }

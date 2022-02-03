@@ -90,7 +90,7 @@ class SUBJECT16_API ASubject15Character : public ACharacter
     bool GetPistolShot(FVector &Start, FVector &End, FHitResult &HitResult);
 
     UFUNCTION(BlueprintImplementableEvent)
-     void OnPowerChange(const UTexture* PowerImg, const FText PowerName);
+    void OnPowerChange(const UTexture *PowerImg, const FText &PowerName);
 
   protected:
     virtual void BeginPlay() override;
@@ -125,7 +125,6 @@ class SUBJECT16_API ASubject15Character : public ACharacter
     uint8 CurrentSlot = 1;
     TArray<UPowerBaseComponent *> PowerArray;
 
-    public:
+  public:
     UPowerBaseComponent *CurrentPower = nullptr;
-
 };
