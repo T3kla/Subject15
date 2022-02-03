@@ -265,10 +265,13 @@ void ASubject15Character::ChangePower(EPowers NewPower)
         break;
     }
 
-    OnPowerChange(CurrentPower->PowerImg, CurrentPower->PowerName); //Cambiar PowerInfo en HUD BP Implement
+   
     // Activate new Power
     if (CurrentPower)
+    {
+        OnPowerChange(CurrentPower->PowerImg, CurrentPower->PowerName); //Cambiar PowerInfo en HUD BP Implement
         CurrentPower->ActivatePower();
+    }
 
     CurrentPowerEnum = NewPower;
 }
