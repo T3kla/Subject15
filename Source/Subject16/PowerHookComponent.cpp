@@ -1,5 +1,6 @@
 #include "PowerHookComponent.h"
 #include "Subject15Character.h"
+#include "Kismet/GameplayStatics.h"
 
 UPowerHookComponent::UPowerHookComponent()
 {
@@ -80,6 +81,8 @@ void UPowerHookComponent::ExecutePower()
             GetWorld()->GetTimerManager().SetTimer(TimerHandleForce, this,
                                                    &UPowerHookComponent::ResetGrappleHook, 0.5f, false);
 
+            FVector SoundLocation = Character->GetArrowComponent()->GetComponentTransform().GetLocation();
+            UGameplayStatics::PlaySoundAtLocation(this, PowerSoundFX, SoundLocation);
         }
 
     }
