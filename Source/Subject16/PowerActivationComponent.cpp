@@ -19,7 +19,8 @@ void UPowerActivationComponent::ExecutePower()
     auto Bullet = Cast<AProjectileActivation>(
         GetWorld()->SpawnActor<AProjectileBase>(this->ProjectilePowerType, A, (B - A).Rotation()));
 
-    Bullet->ActivationCompCpp = this;
+    if (Bullet)
+        Bullet->ActivationCompCpp = this;
 }
 
 void UPowerActivationComponent::SetCurrentlyActive(AActivator *NewActive)
